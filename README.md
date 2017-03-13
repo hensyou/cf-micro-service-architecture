@@ -14,11 +14,24 @@ This application is intended to review the following concepts:
 
 ## What We Are Building
 
-![GitHub Logo](/images/architecture.png)
+![Architecture](/images/architecture.png)
 
 
 # Set Up 
 
-In STS Gradle support needs to be added.
+In STS Gradle support needs to be added. At the time of writing this Gradle Buildship was not working with STS. Instead classic Gradle was installed
+
+Get the dashboard open.
+
+![Architecture](/images/setup-1-find-dashboard.png)
+
+Select the IDE Extensions
+
+![Architecture](/images/setup-2-ide.png)
+
+Select the Gradle Classic Extension
+
+![Architecture](/images/setup-3-classic-gradle.png)
+
 
 
