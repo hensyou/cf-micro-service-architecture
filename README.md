@@ -19,7 +19,11 @@ This application is intended to review the following concepts:
 
 # Set Up 
 
-In STS Gradle support needs to be added. At the time of writing this Gradle Buildship was not working with STS. Instead classic Gradle was installed
+First install Gradle on your machine:
+
+https://gradle.org/install
+
+In STS Gradle support needs to be added. At the time of writing this Gradle Buildship was not working with STS. Instead classic Gradle was installed.
 
 Get the dashboard open.
 
