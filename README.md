@@ -10,9 +10,14 @@ This application is intended to review the following concepts:
 3. Testing
 4. Create Boot Projects With Gradle
 5. Testing, Debugging and Tracing
+6. General Best Practise For Cloud Based Applications
+
+## What We Are Building
+
+![GitHub Logo](/images/architecture.png)
 
 
-# Set Up
+# Set Up 
 
 In STS Gradle support needs to be added.
 
