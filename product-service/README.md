@@ -8,7 +8,7 @@ This service does CRUD on the product data base exposing the products via REST
 2. Data Patterns - create a repository
 3. Testing - TODO
 4. Development Best Practise - logging, injection of components
-5. Profiles - development vs qa vs cloud
-6. Flyway
+5. Profiles - development vs qa vs cloud - TODO
+6. Flyway - TODO
 7. Rest Controllers
 8. Gradle build concepts
