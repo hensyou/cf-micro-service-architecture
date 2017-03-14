@@ -3,19 +3,26 @@
  */
 package com.cloudnativecoffee.product.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author lshannon
  *
  */
 @Entity
-public class Product {
+@Table(name="product")
+public class Product implements Serializable {
 	
+	private static final long serialVersionUID = -9053610858795180871L;
+
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	private String name;
