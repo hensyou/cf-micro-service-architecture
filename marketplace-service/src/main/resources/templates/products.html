@@ -9,5 +9,11 @@
 	<div th:replace="fragments/menu :: menu"></div>
 	
     <p>Product Page</p>
+  	<div th:if="${productList != null}">
+	    <h1>List of Products:</h1>
+	    <ul>
+	       <li th:each="product : ${productList}" th:text="${product.name}">test-product</li>
+	    </ul>
+	</div>
 </body>
 </html>
