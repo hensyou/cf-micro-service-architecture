@@ -1,16 +1,23 @@
-# cf-micro-service-architecture
-Simple Sample of Cloud Native Applications and Patterns
+# Cloud Native Developer Training Course
+In this course we will create a simple Cloud Native Architecture. In completing this task key technologies and cloud native patterns will be reviewed.
 
-## Goals and Outcomes
+## Key Technologies and Patterns Reviewed
 
-This application is intended to review the following concepts:
+Through out the course the following will be covered:
 
-1. Cloud Native Architecture and Patterns (focus on 12 Factor Applications and Spring Cloud)
-2. Spring Boot Review and Tips
-3. Testing
-4. Create Boot Projects With Gradle
-5. Testing, Debugging and Tracing
-6. General Best Practise For Cloud Based Applications
+1. Spring Boot Overview
+2. Gradle Quick Start
+3. Testing in Spring Boot
+4. Using Repositories To Work With Data
+5. Externalizing Configurations and Working With Profiles
+6. Review of Working With Data In PCF
+7. Quick Overview of Working with OAuth2 with Spring Boot
+8. Adding Fault Tolerance
+9. Overview of Messaging In The Cloud
+
+## What This Course Is Not
+
+This course is designed to reinforce concepts already reviewed and learned and give a direction on where to go to learn more.
 
 ## What We Are Building
 
