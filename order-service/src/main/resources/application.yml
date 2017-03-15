@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: order-service
+---
+spring:
+  profiles: dev
+server:
+    port: 8082
