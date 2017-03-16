@@ -15,11 +15,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
-jar {
-	baseName = 'product-service'
-	version = '0.0.1-SNAPSHOT'
-}
-
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
@@ -28,11 +24,7 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-data-rest')
-	compile('org.flywaydb:flyway-core:4.1.2')
-	compile('org.postgresql:postgresql')
-	compileOnly('org.projectlombok:lombok:1.16.14')
-	runtime('com.h2database:h2')
+	compile('org.springframework.boot:spring-boot-starter-data-redis')
+	compile 'org.springframework.boot:spring-boot-starter-web'
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
