@@ -1,0 +1,9 @@
+---
+applications:
+- name: order-service
+  memory: 1024M
+  buildpack: java_buildpack
+  domain: cfapps.io
+  host: cdp-order-service
+  services:
+  - redis-cache

@@ -2,7 +2,10 @@ package com.cloudnativecoffee.order.controller;
 
 
 import com.cloudnativecoffee.order.model.Order;
-import com.cloudnativecoffee.order.repository.OrderRepository;
+import com.cloudnativecoffee.order.repository.OrderRepo;
+import com.cloudnativecoffee.order.service.OrderService;
+import com.google.common.collect.Lists;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -12,27 +15,31 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/v1")
 public class OrderController {
-    private final OrderRepository orderRepository;
+    private final OrderService orderService;
 
-    public OrderController(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
     }
 
     @GetMapping("/order")
-    public Iterable<Order> getAllOrders() {
-        return orderRepository.findAll();
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orderList = Lists.newArrayList(this.orderService.getAllOrders());
+        return ResponseEntity.ok(orderList);
     }
 
     @GetMapping("/order/{userName}")
-    public List<Order> getAllOrderForUser(@PathVariable String userName) {
-        return orderRepository.findByUserName(userName);
+    public ResponseEntity<List<Order>> getAllOrderForUser(@PathVariable String userName) {
+        return ResponseEntity.ok(this.orderService.getAllOrderForUser(userName));
     }
 
     @PostMapping("/order")
-    public Order createOrder(@RequestBody @Valid Order order) {
-        order.setOrderID(UUID.randomUUID().toString());
-        order = orderRepository.save(order);
-        return order;
+    public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
+        return ResponseEntity.ok(this.orderService.createOrder(order));
+    }
+
+    @DeleteMapping("/order/{orderId}")
+    public ResponseEntity<Boolean> deleteOrder(@PathVariable String orderId) {
+        return ResponseEntity.ok(this.orderService.deleteOrder(orderId));
     }
 
 }

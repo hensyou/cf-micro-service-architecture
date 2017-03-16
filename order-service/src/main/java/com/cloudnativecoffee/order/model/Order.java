@@ -1,15 +1,17 @@
 package com.cloudnativecoffee.order.model;
 
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-import javax.annotation.Generated;
-import java.io.Serializable;
 import java.util.List;
 
 @RedisHash("Order")
+@Data
+@NoArgsConstructor
 public class Order {
 
     @Indexed private String userName;
