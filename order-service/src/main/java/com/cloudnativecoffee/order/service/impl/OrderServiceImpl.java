@@ -1,9 +1,9 @@
 package com.cloudnativecoffee.order.service.impl;
 
 
+import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
 import com.cloudnativecoffee.order.model.Order;
 import com.cloudnativecoffee.order.repository.OrderRepo;
-import com.cloudnativecoffee.order.jms.OrderMessageWriter;
 import com.cloudnativecoffee.order.service.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

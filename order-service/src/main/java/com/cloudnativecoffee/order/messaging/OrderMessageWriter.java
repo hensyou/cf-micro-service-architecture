@@ -1,4 +1,4 @@
-package com.cloudnativecoffee.order.jms;
+package com.cloudnativecoffee.order.messaging;
 
 import com.cloudnativecoffee.order.model.Product;
 import org.springframework.integration.annotation.Gateway;
