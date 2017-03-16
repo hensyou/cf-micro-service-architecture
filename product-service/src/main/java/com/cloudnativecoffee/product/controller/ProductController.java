@@ -3,13 +3,21 @@
  */
 package com.cloudnativecoffee.product.controller;
 
+import com.cloudnativecoffee.product.service.ProductService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cloudnativecoffee.product.model.Product;
 import com.cloudnativecoffee.product.repo.ProductRepo;
+import org.springframework.web.client.RestClientException;
+
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 
 /**
  * @author lshannon
@@ -18,20 +26,38 @@ import com.cloudnativecoffee.product.repo.ProductRepo;
 @RestController
 @RequestMapping("/v1")
 public class ProductController {
-	
-	private ProductRepo productRepo;
-	
-	public ProductController(ProductRepo productRepo) {
-		this.productRepo = productRepo;
+	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
+	private final ProductService productService;
+
+	@Autowired
+	public ProductController(ProductService productService) {
+		this.productService = productService;
 	}
 	
-	@RequestMapping("/products")
+	@GetMapping("/products")
 	ResponseEntity<Iterable<Product>> products() {
-		Iterable<Product> returnValue = productRepo.findAll();
+		Iterable<Product> returnValue = this.productService.getAllProducts();
 		if (returnValue != null) {
 			return ResponseEntity.ok(returnValue);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
+	@PostMapping("/products")
+	ResponseEntity<Product> createProducts(@RequestBody @Valid Product product) {
+		try {
+			return ResponseEntity.ok(this.productService.createUpdateProduct(product));
+		} catch(RestClientException | DataIntegrityViolationException | ConstraintViolationException e) {
+			LOG.error("error thrown during create/update of product", e);
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+	}
+
+	@DeleteMapping("/products/{productId}")
+	ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
+		if(this.productService.deleteProduct(productId))
+			return ResponseEntity.ok("Product deleted successfully");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product does not exist");
 	}
 
 }

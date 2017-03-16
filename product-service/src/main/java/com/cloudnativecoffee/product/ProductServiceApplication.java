@@ -15,11 +15,4 @@ public class ProductServiceApplication {
 		SpringApplication.run(ProductServiceApplication.class, args);
 	}
 	
-	@Bean
-	public CommandLineRunner init(ProductRepo repo) {
-		return (args) -> {
-			repo.save(new Product("Black Coffee with sugar", Double.valueOf("2.50"), "Borrrinnnng"));
-			repo.save(new Product("Coffee with milk and sugar", Double.valueOf("3.50"), "Lactose"));
-		};
-	}
 }
