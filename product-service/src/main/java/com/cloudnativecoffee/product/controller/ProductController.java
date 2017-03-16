@@ -3,6 +3,7 @@
  */
 package com.cloudnativecoffee.product.controller;
 
+import com.cloudnativecoffee.product.model.Product;
 import com.cloudnativecoffee.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,9 +12,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.cloudnativecoffee.product.model.Product;
-import com.cloudnativecoffee.product.repo.ProductRepo;
 import org.springframework.web.client.RestClientException;
 
 import javax.validation.ConstraintViolationException;

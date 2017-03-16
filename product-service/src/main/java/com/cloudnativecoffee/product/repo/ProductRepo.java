@@ -3,10 +3,9 @@
  */
 package com.cloudnativecoffee.product.repo;
 
+import com.cloudnativecoffee.product.model.Product;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-
-import com.cloudnativecoffee.product.model.Product;
 
 /**
  * @author lshannon
@@ -14,5 +13,4 @@ import com.cloudnativecoffee.product.model.Product;
  */
 @Repository
 public interface ProductRepo extends PagingAndSortingRepository<Product, Long> {
-
 }

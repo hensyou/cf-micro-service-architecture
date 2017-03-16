@@ -2,7 +2,6 @@ package com.cloudnativecoffee.order.controller;
 
 
 import com.cloudnativecoffee.order.model.Order;
-import com.cloudnativecoffee.order.repository.OrderRepo;
 import com.cloudnativecoffee.order.service.OrderService;
 import com.google.common.collect.Lists;
 import org.springframework.http.ResponseEntity;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1")
 public class OrderController {
     private final OrderService orderService;
+
 
     public OrderController(OrderService orderService) {
         this.orderService = orderService;
