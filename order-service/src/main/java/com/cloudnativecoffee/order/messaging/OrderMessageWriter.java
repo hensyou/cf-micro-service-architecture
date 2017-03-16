@@ -1,15 +1,14 @@
 package com.cloudnativecoffee.order.messaging;
 
-import com.cloudnativecoffee.order.model.Product;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
 
-import java.util.List;
+import com.cloudnativecoffee.order.model.Order;
 
 @MessagingGateway
 public interface OrderMessageWriter {
 
-    @Gateway(requestChannel = "product-send")
-    void write(List<Product> productList);
+    @Gateway(requestChannel = "order-send")
+    void write(Order order);
 
 }

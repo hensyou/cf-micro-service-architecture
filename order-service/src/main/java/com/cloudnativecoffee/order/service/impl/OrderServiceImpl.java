@@ -17,7 +17,7 @@ import java.util.UUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private static Logger LOG = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepo orderRepo;
     private final OrderMessageWriter orderMessageWriter;
@@ -42,7 +42,7 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public Order createOrder(Order order) {
         try {
-            orderMessageWriter.write(order.getProductList());
+            orderMessageWriter.write(order);
             order.setOrderID(UUID.randomUUID().toString());
             return orderRepo.save(order);
         } catch (DataIntegrityViolationException e) {
