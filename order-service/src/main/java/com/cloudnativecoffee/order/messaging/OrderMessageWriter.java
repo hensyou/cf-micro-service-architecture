@@ -8,7 +8,7 @@ import com.cloudnativecoffee.order.model.Order;
 @MessagingGateway
 public interface OrderMessageWriter {
 
-    @Gateway(requestChannel = "order-send")
+    @Gateway(requestChannel = "orderChannel")
     void write(Order order);
 
 }

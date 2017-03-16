@@ -20,5 +20,7 @@ public class Order {
     
     @Id 
     private String orderID;
+    
+    private boolean fulfilled;
 
 }

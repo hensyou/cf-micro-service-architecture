@@ -1,6 +1,6 @@
 package com.cloudnativecoffee.product;
 
-import com.cloudnativecoffee.product.jms.ProductChannels;
+import com.cloudnativecoffee.product.messaging.ProductChannels;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.stream.annotation.EnableBinding;
