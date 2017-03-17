@@ -2,7 +2,7 @@ package com.cloudnativecoffee.order.service.impl;
 
 
 import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
-import com.cloudnativecoffee.order.model.Order;
+import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.repository.OrderRepo;
 import com.cloudnativecoffee.order.service.OrderService;
 import org.slf4j.Logger;
@@ -42,8 +42,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order) {
         try {
-            orderMessageWriter.write(order);
+
             order.setOrderID(UUID.randomUUID().toString());
+            orderMessageWriter.write(order);
             return orderRepo.save(order);
         } catch (DataIntegrityViolationException e) {
             LOG.error("redis save threw an error", e);

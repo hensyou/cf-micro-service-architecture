@@ -1,6 +1,6 @@
 package com.cloudnativecoffee.product.service;
 
-import com.cloudnativecoffee.product.model.Product;
+import com.cloudnativecoffee.model.Product;
 
 public interface ProductService {
 

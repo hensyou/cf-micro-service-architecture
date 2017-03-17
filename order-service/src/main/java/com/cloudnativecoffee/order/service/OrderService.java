@@ -1,7 +1,7 @@
 package com.cloudnativecoffee.order.service;
 
 
-import com.cloudnativecoffee.order.model.Order;
+import com.cloudnativecoffee.model.Order;
 
 import java.util.List;
 

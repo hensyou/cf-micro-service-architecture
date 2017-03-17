@@ -1,6 +1,6 @@
 package com.cloudnativecoffee.order.repository;
 
-import com.cloudnativecoffee.order.model.Order;
+import com.cloudnativecoffee.model.Order;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

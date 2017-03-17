@@ -1,6 +1,6 @@
 package com.cloudnativecoffee.product.service.impl;
 
-import com.cloudnativecoffee.product.model.Product;
+import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.repo.ProductRepo;
 import com.cloudnativecoffee.product.service.ProductService;
 import org.slf4j.Logger;
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
 public class ProductServiceImpl implements ProductService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
@@ -18,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     public ProductServiceImpl(ProductRepo productRepo) {
-        this.productRepo = productRepo;
+        this.productRepo = checkNotNull(productRepo);
     }
 
     @Override

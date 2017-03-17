@@ -1,7 +1,7 @@
-package com.cloudnativecoffee.order.controller;
+package com.cloudnativecoffee.controller;
 
 
-import com.cloudnativecoffee.order.model.Order;
+import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.service.OrderService;
 import com.google.common.collect.Lists;
 import org.springframework.http.ResponseEntity;

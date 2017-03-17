@@ -3,7 +3,7 @@
  */
 package com.cloudnativecoffee.product.controller;
 
-import com.cloudnativecoffee.product.model.Product;
+import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.service.ProductService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +17,8 @@ import org.springframework.web.client.RestClientException;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * @author lshannon
  *
@@ -29,7 +31,7 @@ public class ProductController {
 
 	@Autowired
 	public ProductController(ProductService productService) {
-		this.productService = productService;
+		this.productService = checkNotNull(productService);
 	}
 	
 	@GetMapping("/products")

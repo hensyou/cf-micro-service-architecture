@@ -22,6 +22,8 @@ repositories {
 	mavenCentral()
 }
 
+group = 'com.cloudnativecoffee.order'
+description = 'Order Service'
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-redis')

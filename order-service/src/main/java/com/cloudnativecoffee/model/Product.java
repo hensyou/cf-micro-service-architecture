@@ -1,4 +1,4 @@
-package com.cloudnativecoffee.order.model;
+package com.cloudnativecoffee.model;
 
 
 import java.io.Serializable;
