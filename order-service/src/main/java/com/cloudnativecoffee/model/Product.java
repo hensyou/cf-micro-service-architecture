@@ -4,7 +4,9 @@ package com.cloudnativecoffee.model;
 import java.io.Serializable;
 
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @NoArgsConstructor
@@ -18,17 +20,12 @@ public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+    @Getter @Setter
+    private Long id;
     private String name;
     private Double price;
     private String description;
-    private int quantity;
+    @Getter @Setter
+    private Integer quantity;
 
-    public Product(Long id, String name, Double price, String description, int quantity) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-        this.description = description;
-        this.quantity = quantity;
-    }
 }

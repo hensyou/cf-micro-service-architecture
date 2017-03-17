@@ -2,6 +2,7 @@ package com.cloudnativecoffee.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Order implements Serializable{
     @Indexed
     private String userName;
     
-    private List<Product> productList;
+    private List<Product> productList = new ArrayList<Product>();
     
     @Id @Setter @Getter
     private String orderID;

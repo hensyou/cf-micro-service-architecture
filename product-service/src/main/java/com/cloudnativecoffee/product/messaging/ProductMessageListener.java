@@ -26,16 +26,15 @@ public class ProductMessageListener {
 		List<Product> completedOrder = new ArrayList<Product>();
 		int itemsFullfilled = 0;
 		int itemsToFullfil = order.getProductList().size();
-		for (Product product : order.getProductList()) {
-			//get product from repo
-			Product currentProduct = productRepo.findOne(product.getId());
+		for (Product orderedProduct : order.getProductList()) {
+			//get orderedProduct from repo
+			Product totalProduct = productRepo.findOne(orderedProduct.getId());
 
-			if (currentProduct.getQuantity() >= product.getQuantity()) {
-				product.setQuantity(product.getQuantity()-product.getQuantity());
-				completedOrder.add(product);
+			if (totalProduct.getQuantity() >= orderedProduct.getQuantity()) {
+				orderedProduct.setQuantity(totalProduct.getQuantity()-orderedProduct.getQuantity());
+				completedOrder.add(orderedProduct);
 				itemsFullfilled++;
 			}
-
 		}
 		if (itemsFullfilled == itemsToFullfil) {
 			productRepo.save(completedOrder);
