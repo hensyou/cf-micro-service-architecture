@@ -1,4 +1,4 @@
-package com.cloudnativecoffee.controller;
+package com.cloudnativecoffee.order.controller;
 
 
 import com.cloudnativecoffee.model.Order;
