@@ -5,6 +5,8 @@ import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
 import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.repository.OrderRepo;
 import com.cloudnativecoffee.order.service.OrderService;
+import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +19,15 @@ import java.util.UUID;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
+@AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private static Logger LOG = LoggerFactory.getLogger(OrderServiceImpl.class);
     private final OrderRepo orderRepo;
     private final OrderMessageWriter orderMessageWriter;
 
-    @Autowired
-    public OrderServiceImpl(OrderRepo orderRepo,
-                            OrderMessageWriter orderMessageWriter) {
-        this.orderRepo = checkNotNull(orderRepo);
-        this.orderMessageWriter = checkNotNull(orderMessageWriter);
-    }
-
     @Override
-    public Iterable<Order> getAllOrders() {
-        return orderRepo.findAll();
+    public List<Order> getAllOrders() {
+        return Lists.newArrayList(orderRepo.findAll());
     }
 
     @Override
@@ -42,7 +38,6 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order createOrder(Order order) {
         try {
-
             order.setOrderID(UUID.randomUUID().toString());
             orderMessageWriter.write(order);
             return orderRepo.save(order);

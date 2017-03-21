@@ -5,9 +5,9 @@ package com.cloudnativecoffee.product.controller;
 
 import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.service.ProductService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,7 @@ import org.springframework.web.client.RestClientException;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.List;
 
 /**
  * @author lshannon
@@ -25,18 +24,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @RestController
 @RequestMapping("/v1")
+@AllArgsConstructor
 public class ProductController {
 	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
 	private final ProductService productService;
 
-	@Autowired
-	public ProductController(ProductService productService) {
-		this.productService = checkNotNull(productService);
-	}
-	
 	@GetMapping("/products")
-	ResponseEntity<Iterable<Product>> products() {
-		Iterable<Product> returnValue = this.productService.getAllProducts();
+	ResponseEntity<List<Product>> products() {
+		List<Product> returnValue = this.productService.getAllProducts();
 		if (returnValue != null) {
 			return ResponseEntity.ok(returnValue);
 		}

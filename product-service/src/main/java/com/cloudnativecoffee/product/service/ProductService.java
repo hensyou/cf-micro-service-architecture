@@ -2,9 +2,11 @@ package com.cloudnativecoffee.product.service;
 
 import com.cloudnativecoffee.model.Product;
 
+import java.util.List;
+
 public interface ProductService {
 
-    Iterable<Product> getAllProducts();
+    List<Product> getAllProducts();
 
     Product createUpdateProduct(Product product);
 

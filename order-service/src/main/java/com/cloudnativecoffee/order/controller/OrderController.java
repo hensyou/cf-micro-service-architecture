@@ -4,6 +4,7 @@ package com.cloudnativecoffee.order.controller;
 import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.service.OrderService;
 import com.google.common.collect.Lists;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,19 +13,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
+@AllArgsConstructor
 public class OrderController {
 	
     private final OrderService orderService;
 
-
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
-
     @GetMapping("/order")
     public ResponseEntity<List<Order>> getAllOrders() {
-        List<Order> orderList = Lists.newArrayList(this.orderService.getAllOrders());
-        return ResponseEntity.ok(orderList);
+        return ResponseEntity.ok(this.orderService.getAllOrders());
     }
 
     @GetMapping("/order/{userName}")
