@@ -36,7 +36,7 @@ Through out the course the following will be covered:
 4. Using Repositories To Work With Data
 5. Externalizing Configurations and Working With Profiles
 6. Review of Working With Data In PCF
-7. Quick Overview of Working with OAuth2 with Spring Boot
+7. Basic Security with Spring Boot and introduction to OAuth in PCF
 8. Adding Fault Tolerance
 9. Overview of Messaging In The Cloud
 
