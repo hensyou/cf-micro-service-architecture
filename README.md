@@ -1,7 +1,7 @@
 # Cloud Native Developer Training Course
 In this course we will create a simple Cloud Native Architecture. In completing this task key technologies and cloud native patterns will be reviewed.
 
-# Prequities
+# Prerequisites
 
 Has completed the online self service training:
 
