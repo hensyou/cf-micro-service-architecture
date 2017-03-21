@@ -1,6 +1,6 @@
 # Agenda
 
-!. Introductions and House Keeping - 10 minutes
+1. Introductions and House Keeping - 10 minutes
 2. Git and Gradle Overview - 45 minutes
 3. Break - 10 minutes
 4. Testing - 45 minutes
