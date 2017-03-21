@@ -20,14 +20,50 @@ public class Order implements Serializable{
 
     private static final long serialVersionUID = 1L;
 
-    @Indexed
-    private String userName;
-    
-    private List<Product> productList = new ArrayList<Product>();
-    
-    @Id @Setter @Getter
+    @Id
+    @Setter @Getter
     private String orderID;
-    
+
+    @Indexed
+    @Setter @Getter
+    private String userName;
+
+    @Setter @Getter
+    private List<Product> productList = new ArrayList<Product>();
+
+    @Setter @Getter
     private Boolean fulfilled;
+
+    public static class Builder {
+        private Order order;
+
+        public Builder() {
+            order = new Order();
+        }
+
+        public Builder userName(String userName) {
+            order.setUserName(userName);
+            return this;
+        }
+
+        public Builder questions(List<Product> productList) {
+            order.setProductList(productList);
+            return this;
+        }
+
+        public Builder orderID(String orderID) {
+            order.setOrderID(orderID);
+            return this;
+        }
+
+        public Builder fulfilled(Boolean fulfilled) {
+            order.setFulfilled(fulfilled);
+            return this;
+        }
+
+        public Order build() {
+            return order;
+        }
+    }
 
 }

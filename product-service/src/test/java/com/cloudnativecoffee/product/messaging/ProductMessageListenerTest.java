@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.*;
 public class ProductMessageListenerTest {
 
     private ProductMessageListener productMessageListener;
+    private final String orderId = UUID.randomUUID().toString();
     @Mock
     private ProductRepo productRepo;
     @Before
@@ -54,7 +56,7 @@ public class ProductMessageListenerTest {
 
     private Order dummyOrderObjectCreate(int quantity) {
         return new Order.Builder()
-                .orderID("dummy-order-id")
+                .orderID(orderId)
                 .fulfilled(false)
                 .userName("dummy-user-name")
                 .questions(Arrays.asList(dummyProductObjectCreate(quantity))).build();

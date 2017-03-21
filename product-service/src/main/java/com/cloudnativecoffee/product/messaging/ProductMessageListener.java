@@ -31,8 +31,8 @@ public class ProductMessageListener {
 			//get orderedProduct from repo
 			Product totalProduct = productRepo.findOne(orderedProduct.getId());
 			if (totalProduct.getQuantity() >= orderedProduct.getQuantity()) {
-				orderedProduct.setQuantity(totalProduct.getQuantity()-orderedProduct.getQuantity());
-				completedOrder.add(orderedProduct);
+				totalProduct.setQuantity(totalProduct.getQuantity()-orderedProduct.getQuantity());
+				completedOrder.add(totalProduct);
 				itemsFulfilled++;
 			}
 		}
