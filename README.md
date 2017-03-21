@@ -124,7 +124,9 @@ Our services use Rabbit MQ to communicate.
 
 ## PWS Account
 
-To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS.
+To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS:
+
+http://run.pivotal.io/
 
 ## PCF Dev
 
