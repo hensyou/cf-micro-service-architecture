@@ -17,7 +17,7 @@ spring:
 flyway:
   clean-on-validation-error: true
 server:
-  port: 8089
+  port: 8082
 ---
 spring:
   profiles: cloud

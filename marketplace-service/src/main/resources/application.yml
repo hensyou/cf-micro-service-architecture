@@ -1,0 +1,22 @@
+server:
+  port: 8080
+marketplace:
+  services:
+    order:
+      id: http://localhost:8083
+      api:
+        url: /v1/order/
+    product:
+      id: http://localhost:8082
+      api:
+        url: /v1/products/
+---
+#confirm ROUTES
+spring:
+  profiles: cloud
+marketplace:
+  services:
+    order:
+      id: https://cdp-order-service-cfapps.io
+    product:
+      id: https://cdp-order-service-cfapps.io

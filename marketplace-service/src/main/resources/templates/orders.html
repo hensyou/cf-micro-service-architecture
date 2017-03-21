@@ -6,8 +6,14 @@
 </head>
 <body>
 
-	<div th:replace="fragments/menu :: menu"></div>
-	
+    <div th:replace="fragments/menu :: menu"></div>
+
     <p>Order Page</p>
+    <div th:if="${orderList != null}">
+        <h1>List of Orders:</h1>
+        <ul>
+            <li th:each="order : ${orderList}" th:text="${order.orderID}">test-product</li>
+        </ul>
+    </div>
 </body>
 </html>
