@@ -1,6 +1,31 @@
 # Cloud Native Developer Training Course
 In this course we will create a simple Cloud Native Architecture. In completing this task key technologies and cloud native patterns will be reviewed.
 
+# Prequities
+
+Has completed the online self service training:
+
+https://cdp-landing-page-demo.apps.stg.azr-cc-pcf.cloud.bns/
+
+https://pcf-tutorial-demo.apps.stg.azr-cc-pcf.cloud.bns/
+
+Has completed:
+- CDP Kickoff Session
+- PCF Developer Training
+
+# Agenda
+
+The course run 8 hours starting at 9am sharp and completing at 5pm.
+
+1. Introductions and House Keeping - 10 minutes
+2. Git and Gradle Overview - 45 minutes
+3. Break - 10 minutes
+4. Testing - 45 minutes
+5. Break - 10 minutes
+6. Accelerator Pipeline - 45 minutes
+7. Lunch Break - 1 hours
+8. Hands on Spring Cloud Native Workshop - 4 hours
+
 ## Key Technologies and Patterns Reviewed
 
 Through out the course the following will be covered:
