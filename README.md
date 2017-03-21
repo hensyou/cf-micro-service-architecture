@@ -95,10 +95,14 @@ https://www.postgresql.org/download/
 
 ## Rabbit MQ
 
-Our services use Rabbit MQ to communicate. 
+Our services use Rabbit MQ to communicate.
+
+## PWS Account
+
+To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS.
 
 ## PCF Dev
 
-You can develop locally against PCF Dev. This will provide RabbitMQ and MySQL (our approach to working with Data allows us to switch the DB without code changes) as well as Redis. It will also give the same experience at PCF running in a Cloud:
+You can develop locally against PCF Dev. This will provide everything that is needed to perform the Labs locally with an experience similar that of PWS. It does require 6GB of memory to be free:
 
 https://pivotal.io/pcf-dev
