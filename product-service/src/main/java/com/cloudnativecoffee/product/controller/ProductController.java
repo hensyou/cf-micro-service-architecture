@@ -33,6 +33,7 @@ public class ProductController {
 	ResponseEntity<List<Product>> products() {
 		List<Product> returnValue = this.productService.getAllProducts();
 		if (returnValue != null) {
+			LOG.info("All products returned");
 			return ResponseEntity.ok(returnValue);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);

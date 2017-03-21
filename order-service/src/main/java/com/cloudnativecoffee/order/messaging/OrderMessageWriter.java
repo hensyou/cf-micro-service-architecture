@@ -1,9 +1,8 @@
 package com.cloudnativecoffee.order.messaging;
 
+import com.cloudnativecoffee.model.Order;
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
-
-import com.cloudnativecoffee.model.Order;
 
 @MessagingGateway
 public interface OrderMessageWriter {
