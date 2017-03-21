@@ -3,15 +3,7 @@ In this course we will create a simple Cloud Native Architecture. In completing 
 
 # Prerequisites
 
-Has completed the online self service training:
-
-https://cdp-landing-page-demo.apps.stg.azr-cc-pcf.cloud.bns/
-
-https://pcf-tutorial-demo.apps.stg.azr-cc-pcf.cloud.bns/
-
-Has completed:
-- CDP Kickoff Session
-- PCF Developer Training
+Has completed PCF Developer training 
 
 # Agenda
 
@@ -135,7 +127,7 @@ One of our services is backed with a relation DB. This can be installed locally 
 
 https://www.postgresql.org/download/
 
-### Cloud
+#### Cloud
 
 PWS's market place offers Postgres (Elephant SQL). PCF Dev only offers MySQL, due to the way we develop our applications the SQL will not have to change. PWS will take care of puttting in the correct DB driver, for PCF Dev the application package will need to contain the correct driver
 
@@ -143,7 +135,7 @@ PWS's market place offers Postgres (Elephant SQL). PCF Dev only offers MySQL, du
 
 Our services use Rabbit MQ to communicate.
 
-### Development
+#### Development
 
 Rabbit can be installed locally:
 
@@ -155,7 +147,7 @@ To start rabbit on the Docker images:
 
 docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3.6.6-management
 
-### Cloud
+#### Cloud
 
 PWS's market place offers Rabbit as does PCF Dev
 
