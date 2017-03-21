@@ -2,13 +2,19 @@
 
 ## Propose
 
-This service displays a unified view of the backing services for the client to interact with
+This service displays a unified view of the backing services for the client to interact with.
 
 ## Important Concept
 
-1. Tests TODO
-2. Rest Template
-3. Circuit Breakers
-4. Profiles
+1. Creating a UI Application with Spring Boot
+2. Rest Template To Call Backing Servers
+3. Circuit Breaker To Protect When Backing Services Are Down
+4. Profiles For Different Behavior In Different Environments
 5. Gradle
-6. Spring Concepts (Service)
+6. Spring Boot Concepts (Spring Boot Starters, Auto Configuration, Controllers, Services)
+
+## Create The Service
+
+
+
+
