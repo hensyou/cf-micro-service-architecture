@@ -112,24 +112,52 @@ To get Lombok running we need to do two things:
 1. Install it into the IDE (https://projectlombok.org/download.html)
 2. Add it as a Gradle dependancies: compileOnly "org.projectlombok:lombok:1.16.14"
 
-## Postgres
+## Services
 
-One of our services is backed with a relation DB. This can be installed locally without much pain:
+We will develop locally and deploy to PCF. Deployment can be to PCF Dev or PWS. Services will be made available via the PCF market place on PCF Dev or PWS.
 
-https://www.postgresql.org/download/
-
-## Rabbit MQ
-
-Our services use Rabbit MQ to communicate.
-
-## PWS Account
+### PWS Account
 
 To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS:
 
 http://run.pivotal.io/
 
-## PCF Dev
+### PCF Dev
 
-You can develop locally against PCF Dev. This will provide everything that is needed to perform the Labs locally with an experience similar that of PWS. It does require 6GB of memory to be free:
+You can develop locally against PCF Dev while providing a similar development experience as PWS. It does require 6GB of memory to be free:
 
 https://pivotal.io/pcf-dev
+
+### Postgres
+
+#### Development
+One of our services is backed with a relation DB. This can be installed locally without much pain:
+
+https://www.postgresql.org/download/
+
+### Cloud
+
+PWS's market place offers Postgres (Elephant SQL). PCF Dev only offers MySQL, due to the way we develop our applications the SQL will not have to change. PWS will take care of puttting in the correct DB driver, for PCF Dev the application package will need to contain the correct driver
+
+### Rabbit MQ
+
+Our services use Rabbit MQ to communicate.
+
+### Development
+
+Rabbit can be installed locally:
+
+https://www.rabbitmq.com/download.html
+
+It also can be obtained via Docker:
+
+To start rabbit on the Docker images:
+
+docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3.6.6-management
+
+### Cloud
+
+PWS's market place offers Rabbit as does PCF Dev
+
+
+
