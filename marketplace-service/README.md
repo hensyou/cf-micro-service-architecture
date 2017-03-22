@@ -19,7 +19,7 @@ Create the service:
 
 ```shell
 
-curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,flyway -d groupId=com.cloudnativecoffee -d name=marketplace-service | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
 
 ```
 Question: What did this do? Lets look at start.spring.io
