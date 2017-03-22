@@ -285,3 +285,106 @@ public interface ProductMessageWriter {
 
 ```
 
+## Test
+
+Lets review how messaging is tested:
+
+```java
+
+public class ProductMessageListenerTest {
+
+    private ProductMessageListener productMessageListener;
+    private final String orderId = UUID.randomUUID().toString();
+    @Mock
+    private ProductRepo productRepo;
+    @Before
+    public void before(){
+        MockitoAnnotations.initMocks(this);
+        this.productMessageListener = new ProductMessageListener(productRepo);
+    }
+
+    @Test
+    public void checkProductRepoCalled() {
+        when(productRepo.findOne(any())).thenReturn(dummyProductObjectCreate(10));
+        Order order = productMessageListener.process(dummyOrderObjectCreate(1));
+        verify(this.productRepo, times(1)).findOne(any());
+        assertEquals(true, order.getFulfilled());
+    }
+
+    @Test
+    public void checkFulfilledFail() {
+        when(productRepo.findOne(any())).thenReturn(dummyProductObjectCreate(2));
+        Order order = productMessageListener.process(dummyOrderObjectCreate(3));
+        verify(this.productRepo, times(1)).findOne(any());
+        assertEquals(false, order.getFulfilled());
+    }
+
+    private Product dummyProductObjectCreate(int quantity) {
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Product product = enhancedRandom.nextObject(Product.class);
+        product.setQuantity(quantity);
+        return product;
+    }
+
+    private Order dummyOrderObjectCreate(int quantity) {
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Order order = enhancedRandom.nextObject(Order.class);
+        order.setProductList(Arrays.asList(dummyProductObjectCreate(quantity)));
+        return order;
+    }
+
+
+```
+Here is how the Service layer is tested:
+
+```java
+
+public class ProductServiceTest {
+    private ProductService productService;
+    @Mock
+    ProductRepo productRepo;
+    @Captor
+    private ArgumentCaptor<Product> productCaptor;
+    @Captor
+    private ArgumentCaptor<Long> productIdCapture;
+
+    @Before
+    public void before(){
+        MockitoAnnotations.initMocks(this);
+        this.productService = new ProductServiceImpl(productRepo);
+    }
+
+    @Test
+    public void verifyFindAllInvoked() {
+        when(productRepo.findAll()).thenReturn(new ArrayList<Product>());
+        productService.getAllProducts();
+        verify(this.productRepo, times(1)).findAll();
+    }
+
+    @Test
+    public void verifyRepoSaveInvoked() {
+        productService.createUpdateProduct(dummyProductObjectCreate(10));
+        verify(this.productRepo, times(1)).save(productCaptor.capture());
+        Product product = productCaptor.getValue();
+        assertEquals("dummy-product-name", product.getName());
+    }
+
+    @Test
+    public void verifyRepoDelete() {
+        productService.deleteProduct(new Long(123));
+        verify(this.productRepo, times(1)).delete(productIdCapture.capture());
+        assertEquals(new Long(123), productIdCapture.getValue());
+    }
+
+    private Product dummyProductObjectCreate(int quantity) {
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Product product = enhancedRandom.nextObject(Product.class);
+        product.setQuantity(quantity);
+        product.setName("dummy-product-name");
+        return product;
+    }
+
+}
+
+```
+
