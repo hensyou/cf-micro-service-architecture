@@ -146,4 +146,68 @@ public interface ProductRepo extends PagingAndSortingRepository<Product, Long> {
 ```
 It does not look like much, but Spring Data Repositories are a very powerful tool for us. Lets discuss the benifits and look at how they can be extended.
 
+## Making The Service A Resource Service
+
+To ensure data is only returned when a valid token is supplied, the following configuration is added:
+
+```java
+
+@Configuration
+@EnableResourceServer
+public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
+
+	private static final Logger logger = Logger.getLogger(ResourceServerConfig.class);
+	
+	@Value("${security.oauth2.client.clientId:default_resource_id}")
+	private String resourceId;
+
+	@Override
+	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+		resources.tokenServices(tokenServices());
+		logger.debug("INJECTED_RESOURCE_ID: "+ resourceId);
+		resources.resourceId(resourceId);
+	}
+
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.addFilterAfter(new BearerTokenOncePerRequestFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+			.antMatcher("/**")
+		      .authorizeRequests()
+		        .antMatchers("/h2-console/**")
+		        .permitAll()
+		      .anyRequest()
+		        .authenticated();
+	}
+	
+ 
+    @Bean
+    public TokenStore tokenStore() {
+        return new JwtTokenStore(accessTokenConverter());
+    }
+ 
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter() {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+        converter.setSigningKey("123");
+        return converter;
+    }
+ 
+    @Bean
+    @Primary
+    public DefaultTokenServices tokenServices() {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setTokenStore(tokenStore());
+        return defaultTokenServices;
+    }
+
+
+
+}
+
+```
+
+Let discuss this from a high level, in your enterprise the details on the token creation will differ.
+
+
+
 
