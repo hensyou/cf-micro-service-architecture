@@ -9,10 +9,58 @@ curl https://start.spring.io/starter.tgz -d style=web -d name=auth-server -d typ
 
 ```
 
-Add the following dependancies:
+Update the dependancies:
 
-```bash
+```shell
 
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile "org.springframework.boot:spring-boot-starter-security"
+	compile "org.springframework.security.oauth:spring-security-oauth2"
+}
 
 
 ```
+
+Add the @EnableAuthorizationServer annotation
+
+```java
+
+@SpringBootApplication
+@EnableAuthorizationServer
+public class AuthServerApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(AuthServerApplication.class, args);
+	}
+}
+
+```
+
+Save the application.properties as application.yml and add the following config:
+
+```shell
+
+security:
+  user:
+    name: admin
+    password: admin
+    role: USER
+  oauth2:
+    client:
+      client-id: adminclient
+      client-secret: adminsecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+
+```
+
+Test for a certificate using the Admin Id and Secret:
+
+```bash
+
+curl adminclient:adminsecret@localhost:8080/oauth/token -d grant_type=client_credentials
+
+```
+
