@@ -36,8 +36,14 @@ public class AuthServerApplication{
 		
 		@Override
 		protected void configure(HttpSecurity http) throws Exception {
-			http.formLogin().loginPage("/login").permitAll().and().authorizeRequests()
-					.anyRequest().authenticated();
+			http
+			.formLogin()
+			//.loginPage("/login")
+			.permitAll()
+			.and()
+			.authorizeRequests()
+			.anyRequest().
+			authenticated();
 		}
 		
 		@Override
@@ -86,7 +92,8 @@ public class AuthServerApplication{
 			clients.inMemory()
 					.withClient("adminclient")
 					.secret("adminsecret")
-					.authorizedGrantTypes("authorization_code", "client_credentials", "refresh_token", "password").scopes("read","write");
+					.authorizedGrantTypes("authorization_code").scopes("read","write");
+					//.authorizedGrantTypes("authorization_code", "client_credentials", "refresh_token", "password").scopes("read","write");
 		}
 	}
 	

@@ -15,6 +15,9 @@ security:
   ignored: /favicon.ico
   basic:
     enabled: false
+  user:
+    name: admin
+    password: admin
   oauth2:
     client:
       client-id: adminclient
@@ -23,7 +26,7 @@ security:
       auto-approve-scopes: '.*'
       access-token-uri: http://localhost:9999/oauth/token
       user-authorization-uri: http://localhost:9999/oauth/authorize
-      grant_type: password
+      grant_type: authorization_code
     resource:
       user-info-uri: http://localhost:9999/me
 ---

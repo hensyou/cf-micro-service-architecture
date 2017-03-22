@@ -24,23 +24,23 @@ import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Bean
-    public Filter oauthFilter() {
-        return new DelegatingFilterProxy("oauth2ClientContextFilter");
-    }
+    //@Bean
+    //public Filter oauthFilter() {
+     //   return new DelegatingFilterProxy("oauth2ClientContextFilter");
+    //}
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
-        http.authorizeRequests().antMatchers("/**").permitAll();
-        http.addFilterBefore(new HystrixRequestContextServletFilter(), HeaderWriterFilter.class).addFilterBefore(new RequestContextFilter(), HeaderWriterFilter.class);
+        //http.csrf().disable();
+        //http.authorizeRequests().antMatchers("/**").permitAll();
+        //http.addFilterBefore(new HystrixRequestContextServletFilter(), HeaderWriterFilter.class).addFilterBefore(new RequestContextFilter(), HeaderWriterFilter.class);
         
         http
 	        .authorizeRequests()
-	        .antMatchers("/login*").anonymous()
+	        //.antMatchers("/login*").anonymous()
 	        .anyRequest().authenticated()
 	        .and()
-	        .formLogin()
+	        .formLogin().permitAll()
 	        .defaultSuccessUrl("/");
         
     }

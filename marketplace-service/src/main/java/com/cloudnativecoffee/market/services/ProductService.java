@@ -39,14 +39,14 @@ public class ProductService {
 		this.restTemplate = restTemplate;
 	}
 
-	@HystrixCommand(
-			fallbackMethod = FALLBACK_METHOD,
-			commandProperties={
-				@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"),
-				@HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")
-				
-			}
-	)
+//	@HystrixCommand(
+//			fallbackMethod = FALLBACK_METHOD,
+//			commandProperties={
+//				@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"),
+//				@HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")
+//				
+//			}
+//	)
 	public ResponseEntity<List<Product>> getAllProducts() {
 		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {};
 		String apiUrl = new StringBuilder().append(productServiceHost).append(productBaseurl).toString();
