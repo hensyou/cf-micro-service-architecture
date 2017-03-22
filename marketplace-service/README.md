@@ -13,9 +13,9 @@ This service displays a unified view of the backing services for the client to i
 5. Gradle
 6. Spring Boot Concepts (Spring Boot Starters, Auto Configuration, Controllers, Services)
 
-## Create The Service
+## Create The Application
 
-Create the service:
+Create the Application:
 
 ```shell
 
@@ -52,7 +52,9 @@ There is support for templates to centralize common code. We can also see how it
 
 Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
 
-## Add The Controllers
+## Creating Controllers
+
+Before looking at the controllers in the application, lets understand the basics of the controller in Spring Boot.
 
 ```java
 
@@ -61,35 +63,17 @@ Question: Why not display HTML or Javascript on it own? PCF has a static build p
 @AllArgsConstructor
 public class ProductController {
 	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
-	private final ProductService productService;
 
 	@GetMapping("/products")
-	ResponseEntity<List<Product>> products() {
-		List<Product> returnValue = this.productService.getAllProducts();
+	ResponseEntity<List<String>> products() {
+		List<Product> returnValue = new ArrayList<String>();
+		returnValue.add("One");
+		returnValue.add("Two");
 		if (returnValue != null) {
-			LOG.info("All products returned");
 			return ResponseEntity.ok(returnValue);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
-
-	@PostMapping("/products")
-	ResponseEntity<Product> createProducts(@RequestBody @Valid Product product) {
-		try {
-			return ResponseEntity.ok(this.productService.createUpdateProduct(product));
-		} catch(RestClientException | DataIntegrityViolationException | ConstraintViolationException e) {
-			LOG.error("error thrown during create/update of product", e);
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@DeleteMapping("/products/{productId}")
-	ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
-		if(this.productService.deleteProduct(productId))
-			return ResponseEntity.ok("Product deleted successfully");
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product does not exist");
-	}
-
 }
 
 ```
@@ -97,14 +81,22 @@ Important concepts are:
 
 - @RestController
 - @RequestMapping
-- @GetMapping, @PutMapping, @DeleteMapping
+- @GetMapping
 - ResponseEntity
 
 Question: Why use an args constructor? Why not autowire what we need into the Controller?
 
 Before going on to the services lets take a look at the Product Service.
 
+## Displaying Data In The UI
+
+
+
 ## Switch To The Product Service
+
+## Connecting The Services
+
+We want to display the 
 
 ## Review The Services
 
