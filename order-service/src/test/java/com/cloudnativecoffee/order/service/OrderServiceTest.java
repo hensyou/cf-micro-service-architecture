@@ -5,6 +5,8 @@ import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
 import com.cloudnativecoffee.order.repository.OrderRepo;
 import com.cloudnativecoffee.order.service.impl.OrderServiceImpl;
+import io.github.benas.randombeans.EnhancedRandomBuilder;
+import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -60,11 +62,11 @@ public class OrderServiceTest {
     }
 
     private Order dummyOrderObjectCreate() {
-        return new Order.Builder()
-                .orderID(orderId)
-                .fulfilled(false)
-                .userName("dummy-user-name")
-                .questions(new ArrayList<Product>()).build();
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Order order = enhancedRandom.nextObject(Order.class);
+        order.setOrderID(orderId);
+        order.setUserName("dummy-user-name");
+        return order;
     }
 
 }

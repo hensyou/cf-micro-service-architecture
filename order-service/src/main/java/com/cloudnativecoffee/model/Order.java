@@ -34,36 +34,4 @@ public class Order implements Serializable{
     @Setter @Getter
     private Boolean fulfilled;
 
-    public static class Builder {
-        private Order order;
-
-        public Builder() {
-            order = new Order();
-        }
-
-        public Builder userName(String userName) {
-            order.setUserName(userName);
-            return this;
-        }
-
-        public Builder questions(List<Product> productList) {
-            order.setProductList(productList);
-            return this;
-        }
-
-        public Builder orderID(String orderID) {
-            order.setOrderID(orderID);
-            return this;
-        }
-
-        public Builder fulfilled(Boolean fulfilled) {
-            order.setFulfilled(fulfilled);
-            return this;
-        }
-
-        public Order build() {
-            return order;
-        }
-    }
-
 }
