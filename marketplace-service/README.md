@@ -141,34 +141,67 @@ There is support for templates to centralize common code. We can also see how it
 
 Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
 
+Let's review other UI options that can be ran within Spring Boot.
+
 ## Review The Services
 
+Its good to put logic in a service and leave that Controller to route requests and responses.
 
-## Create The Fallback
+Here is a sample of a service:
 
-## Update The The UI
+```java
 
-Update the UI
+@Service
+public class ProductService {
+	private final Logger LOG = Logger.getLogger(ProductService.class);
+	private static final String FALLBACK_METHOD = "genericErrorMessage";
+	private final String productServiceHost;
+	private final String productBaseurl;
+	private OAuth2RestTemplate restTemplate;
 
-## Switch To Create The Order Service
+	public ProductService(@Value("${marketplace.services.product.id}") String productServiceHost,
+						  @Value("${marketplace.services.product.api.url}") String productBaseurl,
+						  OAuth2RestTemplate restTemplate) {
+		this.productServiceHost = productServiceHost;
+		this.productBaseurl = productBaseurl;
+		this.restTemplate = restTemplate;
+	}
 
-Come back once that is completed
+	@HystrixCommand(
+			fallbackMethod = FALLBACK_METHOD,
+			commandProperties={
+				@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"),
+				@HystrixProperty(name = "execution.isolation.strategy", value = "SEMAPHORE")
+				
+			}
+	)
+	public ResponseEntity<List<Product>> getAllProducts() {
+		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {};
+		String apiUrl = new StringBuilder().append(productServiceHost).append(productBaseurl).toString();
+		
+		OAuth2AccessToken token = restTemplate.getAccessToken();
+		LOG.debug("token: " + token);
+		
+		List<Product> products = restTemplate.exchange(apiUrl, HttpMethod.GET, null, parameterizedTypeReference).getBody();
+		return new ResponseEntity<List<Product>>(products, HttpStatus.OK);
+	}
 
-## Add Services
+	public ResponseEntity<List<Product>> genericErrorMessage(Throwable exception) {
+		LOG.error("An error has occurred. Callback method called", exception);
+		return new ResponseEntity<>(HttpStatus.SERVICE_UNAVAILABLE);
+	}
+}
 
-Add the services to call the Order Service
-
-## Update The UI
-
-Update The UI
+```
+Key concepts:
+- @Service
+- @HystrixCommmand
+- ParameterizedTypeReference
+- HttpStatus
 
 ## Added Security
 
 Login for the market place
-
-## Review The Authentication Server
-
-## Discuss JWT 
 
 
 
