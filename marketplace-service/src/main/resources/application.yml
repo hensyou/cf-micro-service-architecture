@@ -7,7 +7,7 @@ marketplace:
       api:
         url: /v1/order/
     product:
-      id: http://localhost:8081
+      id: http://product-service:8081
       api:
         url: /v1/products/
         
@@ -24,11 +24,11 @@ security:
       client-secret: adminsecret
       scope: read,write
       auto-approve-scopes: '.*'
-      access-token-uri: http://localhost:9999/oauth/token
-      user-authorization-uri: http://localhost:9999/oauth/authorize
+      access-token-uri: http://auth-server:9999/oauth/token
+      user-authorization-uri: http://auth-server:9999/oauth/authorize
       grant_type: authorization_code
     resource:
-      user-info-uri: http://localhost:9999/me
+      user-info-uri: http://auth-server:9999/me
 ---
 #confirm ROUTES
 spring:
