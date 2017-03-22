@@ -1,6 +1,6 @@
 # Market Place Service
 
-## Propose
+## Purpose
 
 This service displays a unified view of the backing services for the client to interact with.
 
