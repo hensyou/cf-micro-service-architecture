@@ -3,6 +3,8 @@ package com.cloudnativecoffee.product.service;
 import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.repo.ProductRepo;
 import com.cloudnativecoffee.product.service.impl.ProductServiceImpl;
+import io.github.benas.randombeans.EnhancedRandomBuilder;
+import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -53,12 +55,11 @@ public class ProductServiceTest {
     }
 
     private Product dummyProductObjectCreate(int quantity) {
-        return new Product.Builder()
-                .description("dummy-product-desc")
-                .name("dummy-product-name")
-                .price(2.5)
-                .quantity(quantity).build();
-
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Product product = enhancedRandom.nextObject(Product.class);
+        product.setQuantity(quantity);
+        product.setName("dummy-product-name");
+        return product;
     }
 
 }

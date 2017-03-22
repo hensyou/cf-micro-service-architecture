@@ -4,6 +4,8 @@ package com.cloudnativecoffee.product.messaging;
 import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.repo.ProductRepo;
+import io.github.benas.randombeans.EnhancedRandomBuilder;
+import io.github.benas.randombeans.api.EnhancedRandom;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -45,21 +47,17 @@ public class ProductMessageListenerTest {
     }
 
     private Product dummyProductObjectCreate(int quantity) {
-        return new Product.Builder()
-                .id(new Long(123))
-                .description("dummy-product-desc")
-                .name("dummy-product-name")
-                .price(2.5)
-                .quantity(quantity).build();
-
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Product product = enhancedRandom.nextObject(Product.class);
+        product.setQuantity(quantity);
+        return product;
     }
 
     private Order dummyOrderObjectCreate(int quantity) {
-        return new Order.Builder()
-                .orderID(orderId)
-                .fulfilled(false)
-                .userName("dummy-user-name")
-                .questions(Arrays.asList(dummyProductObjectCreate(quantity))).build();
+        EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
+        Order order = enhancedRandom.nextObject(Order.class);
+        order.setProductList(Arrays.asList(dummyProductObjectCreate(quantity)));
+        return order;
     }
 
 }
