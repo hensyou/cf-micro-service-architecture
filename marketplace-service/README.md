@@ -13,9 +13,9 @@ This service displays a unified view of the backing services for the client to i
 5. Gradle
 6. Spring Boot Concepts (Spring Boot Starters, Auto Configuration, Controllers, Services)
 
-## Create The Application
+## Create The Service
 
-Create the Application:
+Create the service:
 
 ```shell
 
@@ -40,6 +40,71 @@ dependencies {
 
 ```
 
+## Review The Domain Objects
+
+We want to keep our definitions are streamline as possible. Lombok helps with this.
+
+```java
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order {
+
+    private String userName;
+    private List<Product> productList = new ArrayList<Product>();
+    private String orderID;
+    private Boolean fulfilled;
+}
+
+```
+
+With this approach its easier to define object in different services. Why not have a common library of code with models that all applications share?
+
+## Reviewing The Controllers
+
+Controllers are used to route requests, Services are used to perform business operations (ie: calling backing services). Lets review
+
+```java
+
+@Controller
+public class ProductController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+	private final ProductService productService;
+	
+	@Autowired
+	public ProductController(ProductService productService) {
+		this.productService = productService;
+	}
+	
+	@RequestMapping("/products")
+	public String products(Model model) {
+		LOGGER.info("Entered products");
+		ResponseEntity<List<Product>> productList = productService.getAllProducts();
+		LOGGER.info("testing list"+ productList.toString());
+		model.addAttribute("productList", productList.getBody());
+		return "products";
+	}
+}
+
+```
+Important concepts are:
+
+- @Controller
+- @RequestMapping
+- Model
+
+Question: Why use an args constructor? Why not autowire what we need into the Controller?
+
+Before going on to the services lets take a look at the Product Service.
+
 ## What is Thymeleaf?
 
 Thymeleaf is a modern server-side Java template engine for both web and standalone environments. Thymeleaf's main goal is to bring elegant natural templates to your development workflow — HTML that can be correctly displayed in browsers and also work as static prototypes, allowing for stronger collaboration in development teams. It has great support for Spring:
@@ -50,57 +115,34 @@ Lets explore Thymeleaf's in the working Spring Boot sample.
 
 There is support for templates to centralize common code. We can also see how it can be used to display informtation passed from a backing controller.
 
-Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
+```html
 
-## Creating Controllers
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
 
-Before looking at the controllers in the application, lets understand the basics of the controller in Spring Boot.
-
-```java
-
-@RestController
-@RequestMapping("/v1")
-@AllArgsConstructor
-public class ProductController {
-	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
-
-	@GetMapping("/products")
-	ResponseEntity<List<String>> products() {
-		List<Product> returnValue = new ArrayList<String>();
-		returnValue.add("One");
-		returnValue.add("Two");
-		if (returnValue != null) {
-			return ResponseEntity.ok(returnValue);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-}
+	<div th:replace="fragments/menu :: menu"></div>
+	
+    <p>Product Page</p>
+  	<div th:if="${productList != null}">
+	    <h1>List of Products:</h1>
+	    <ul>
+	       <li th:each="product : ${productList}" th:text="${product.name}">test-product</li>
+	    </ul>
+	</div>
+</body>
+</html>
 
 ```
-Important concepts are:
 
-- @RestController
-- @RequestMapping
-- @GetMapping
-- ResponseEntity
-
-Question: Why use an args constructor? Why not autowire what we need into the Controller?
-
-Before going on to the services lets take a look at the Product Service.
-
-## Displaying Data In The UI
-
-
-
-## Switch To The Product Service
-
-## Connecting The Services
-
-We want to display the 
+Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
 
 ## Review The Services
 
-Add The Services To call the product service, cover RestTemplate
 
 ## Create The Fallback
 
