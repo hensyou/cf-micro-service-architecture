@@ -35,13 +35,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.addFilterAfter(new BearerTokenOncePerRequestFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+		//http.addFilterAfter(new BearerTokenOncePerRequestFilter(), AbstractPreAuthenticatedProcessingFilter.class)
+		http
+			.headers().frameOptions().disable()
+			.and()
 			.antMatcher("/**")
 		      .authorizeRequests()
 		        .antMatchers("/h2-console/**")
 		        .permitAll()
 		      .anyRequest()
-		        .authenticated();
+		       .authenticated();
 	}
 	
  
