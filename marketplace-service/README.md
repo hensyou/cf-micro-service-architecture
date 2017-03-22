@@ -279,6 +279,8 @@ public class ServicesConfig {
 
 This will ensure the token value is in the session, which the Resource servers will expect before returning data.
 
+These are the important concepts in this service. Lets take some time to discuss, or work on building some of these ideas.
+
 
 
 
