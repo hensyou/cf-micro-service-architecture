@@ -7,9 +7,25 @@ marketplace:
       api:
         url: /v1/order/
     product:
-      id: http://localhost:8082
+      id: http://localhost:8081
       api:
         url: /v1/products/
+        
+security:
+  ignored: /favicon.ico
+  basic:
+    enabled: false
+  oauth2:
+    client:
+      client-id: adminclient
+      client-secret: adminsecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+      access-token-uri: http://localhost:9999/oauth/token
+      user-authorization-uri: http://localhost:9999/oauth/authorize
+      grant_type: password
+    resource:
+      user-info-uri: http://localhost:9999/me
 ---
 #confirm ROUTES
 spring:
