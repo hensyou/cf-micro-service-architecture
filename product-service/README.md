@@ -208,3 +208,80 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 
 Let discuss this from a high level, in your enterprise the details on the token creation will differ.
 
+## Messaging Components
+
+This service recieves a call from the Order service to place an order. This checks if there is enough product and modifies the accordingly.
+
+Messaging is driven by RabbitMQ. Our channels (Topics in Rabbit MQ) are configured in this way:
+
+```java
+
+public interface ProductChannels {
+
+    @Input
+    SubscribableChannel orderChannel();
+    
+    @Output
+    MessageChannel confirmationChannel();
+
+}
+
+```
+
+
+Here is our listener, when this receives a message on the Order channel it performs the business logic and then puts a confirmation back on the confirmationChannel (which goes back to the Order service so it can persist an Order)
+
+```java
+
+MessageEndpoint
+public class ProductMessageListener {
+    private final ProductRepo productRepo;
+
+    public ProductMessageListener(ProductRepo productRepo) {
+        this.productRepo = productRepo;
+    }
+
+    @StreamListener(value = "orderChannel")
+	@SendTo("confirmationChannel")
+    @Transactional
+    public Order process(Order order) {
+		List<Product> completedOrder = new ArrayList<Product>();
+		int itemsFulfilled = 0;
+		int itemsToFulfill = order.getProductList().size();
+		for (Product orderedProduct : order.getProductList()) {
+			//get orderedProduct from repo
+			Product totalProduct = productRepo.findOne(orderedProduct.getId());
+			if (totalProduct.getQuantity() >= orderedProduct.getQuantity()) {
+				totalProduct.setQuantity(totalProduct.getQuantity()-orderedProduct.getQuantity());
+				completedOrder.add(totalProduct);
+				itemsFulfilled++;
+			}
+		}
+		if (itemsFulfilled == itemsToFulfill) {
+			productRepo.save(completedOrder);
+			order.setFulfilled(true);
+		}
+		else {
+			order.setFulfilled(false);
+		}
+		return order;
+    }
+
+}
+
+```
+
+Here is how the Order confirmation is written (the sendTo in the listener calls this):
+
+```java
+
+@MessagingGateway
+public interface ProductMessageWriter {
+
+    @Gateway(requestChannel = "confirmationChannel")
+    void write(Order order);
+    
+}
+
+```
+
