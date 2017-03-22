@@ -5,7 +5,7 @@ This is to simulate an OAuth Server, it issue JWT tokens that can used to secure
 
 ```bash
 
-curl https://start.spring.io/starter.tgz -d style=web -d name=auth-server -d type=gradle-project | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web -d groupId=com.cloudnativecoffee -d name=auth-server | tar -xzvf -
 
 ```
 
