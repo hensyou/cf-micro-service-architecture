@@ -56,11 +56,16 @@ security:
 
 ```
 
-Test for a certificate using the Admin Id and Secret:
+Test for a token using the Admin Id and Secret:
 
 ```bash
 
 curl adminclient:adminsecret@localhost:8080/oauth/token -d grant_type=client_credentials
 
 ```
+
+## Note
+
+This is not production ready. This is designed to simulate the OAuth token flow.
+
 
