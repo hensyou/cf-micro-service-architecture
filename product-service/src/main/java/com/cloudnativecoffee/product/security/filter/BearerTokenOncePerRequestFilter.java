@@ -23,6 +23,7 @@ public class BearerTokenOncePerRequestFilter extends OncePerRequestFilter{
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         if(tokenExtractor.extract(request) == null){
+        	System.out.println("token was not found; clearing SecurityContextHolder");
             SecurityContextHolder.clearContext();
         }
         filterChain.doFilter(request, response);
