@@ -62,6 +62,47 @@ Important Concepts:
 
 As you can guess this service will be backed with Redis.
 
+## Adding The Repository
+
+To be able to persist to Redis the following Repository is added:
+
+```java
+
+@Repository
+public interface OrderRepo extends CrudRepository<Order, String>{
+    
+	List<Order> findByUserName(String userName);
+}
+
+```
+Lets discuss this including what the access method that is added will do. How does this compare to the Product Repo?
+
+## Messaging
+
+Messaging is similar to the Product service. The main difference is the Order service is listening for a confirmation of an Order before doing its update to the backing service:
+
+```java
+
+@MessageEndpoint
+public class OrderMessageListener {
+	private static final Logger LOG = LoggerFactory.getLogger(OrderMessageListener.class);
+	private final OrderRepo orderRepo;
+
+	public OrderMessageListener(OrderRepo orderRepo) {
+		this.orderRepo = orderRepo;
+	}
+	
+    @StreamListener(value = "confirmationChannel")
+    public void checkOrderConfirmation(Order order) {
+		LOG.info("order confirmation saved, status is "+order.getFulfilled());
+    	orderRepo.save(order);
+    }
+
+}
+
+```
+
+
 
 
 
