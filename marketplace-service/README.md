@@ -201,7 +201,84 @@ Key concepts:
 
 ## Added Security
 
-Login for the market place
+Before reviewing the security, lets review Spring Security, OAuth and JWT.
+
+To secure the market place application we can add the following:
+
+```java
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+	        .authorizeRequests()
+	        .anyRequest().authenticated()
+	        .and()
+	        .formLogin().permitAll()
+	        .defaultSuccessUrl("/");
+    }
+}
+
+```
+This ensures all requests are authenticated and a login form is displayed (Spring Security will generate it).
+
+Our user name and password are configured in the application.yml
+
+```java
+
+security:
+  ignored: /favicon.ico
+  basic:
+    enabled: false
+  user:
+    name: admin
+    password: admin
+
+```
+Question: Obviously this is not production ready. What are some things we can do?
+
+Next we need to be redirected to the Authorization Server to get a Token that can be used to talk to Resource Services:
+
+```java
+
+oauth2:
+    client:
+      client-id: adminclient
+      client-secret: adminsecret
+      scope: read,write
+      auto-approve-scopes: '.*'
+      access-token-uri: http://localhost:9999/oauth/token
+      user-authorization-uri: http://localhost:9999/oauth/authorize
+      grant_type: authorization_code
+    resource:
+      user-info-uri: http://localhost:9999/me
+      
+```
+We need this to make the Rest calls from the Service and get resources.
+
+Here is how a OAuth aware Rest Template is configured:
+
+```java
+
+@Configuration
+@EnableOAuth2Client
+public class ServicesConfig {
+
+	@Bean
+	@Scope(value = "session", proxyMode = ScopedProxyMode.TARGET_CLASS)
+	OAuth2RestTemplate restTemplate(OAuth2ProtectedResourceDetails resource, OAuth2ClientContext context) {
+		return new OAuth2RestTemplate(resource, context);
+	}
+
+}
+
+```
+
+This will ensure the token value is in the session, which the Resource servers will expect before returning data.
+
 
 
 
