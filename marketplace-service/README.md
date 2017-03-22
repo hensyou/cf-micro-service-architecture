@@ -1,6 +1,6 @@
 # Market Place Service
 
-## Propose
+## Purpose
 
 This service displays a unified view of the backing services for the client to interact with.
 
@@ -40,6 +40,71 @@ dependencies {
 
 ```
 
+## Review The Domain Objects
+
+We want to keep our definitions are streamline as possible. Lombok helps with this.
+
+```java
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Order {
+
+    private String userName;
+    private List<Product> productList = new ArrayList<Product>();
+    private String orderID;
+    private Boolean fulfilled;
+}
+
+```
+
+With this approach its easier to define object in different services. Why not have a common library of code with models that all applications share?
+
+## Reviewing The Controllers
+
+Controllers are used to route requests, Services are used to perform business operations (ie: calling backing services). Lets review
+
+```java
+
+@Controller
+public class ProductController {
+	private static final Logger LOGGER = LoggerFactory.getLogger(ProductController.class);
+	private final ProductService productService;
+	
+	@Autowired
+	public ProductController(ProductService productService) {
+		this.productService = productService;
+	}
+	
+	@RequestMapping("/products")
+	public String products(Model model) {
+		LOGGER.info("Entered products");
+		ResponseEntity<List<Product>> productList = productService.getAllProducts();
+		LOGGER.info("testing list"+ productList.toString());
+		model.addAttribute("productList", productList.getBody());
+		return "products";
+	}
+}
+
+```
+Important concepts are:
+
+- @Controller
+- @RequestMapping
+- Model
+
+Question: Why use an args constructor? Why not autowire what we need into the Controller?
+
+Before going on to the services lets take a look at the Product Service.
+
 ## What is Thymeleaf?
 
 Thymeleaf is a modern server-side Java template engine for both web and standalone environments. Thymeleaf's main goal is to bring elegant natural templates to your development workflow — HTML that can be correctly displayed in browsers and also work as static prototypes, allowing for stronger collaboration in development teams. It has great support for Spring:
@@ -50,65 +115,34 @@ Lets explore Thymeleaf's in the working Spring Boot sample.
 
 There is support for templates to centralize common code. We can also see how it can be used to display informtation passed from a backing controller.
 
-Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
+```html
 
-## Add The Controllers
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
 
-```java
-
-@RestController
-@RequestMapping("/v1")
-@AllArgsConstructor
-public class ProductController {
-	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
-	private final ProductService productService;
-
-	@GetMapping("/products")
-	ResponseEntity<List<Product>> products() {
-		List<Product> returnValue = this.productService.getAllProducts();
-		if (returnValue != null) {
-			LOG.info("All products returned");
-			return ResponseEntity.ok(returnValue);
-		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	}
-
-	@PostMapping("/products")
-	ResponseEntity<Product> createProducts(@RequestBody @Valid Product product) {
-		try {
-			return ResponseEntity.ok(this.productService.createUpdateProduct(product));
-		} catch(RestClientException | DataIntegrityViolationException | ConstraintViolationException e) {
-			LOG.error("error thrown during create/update of product", e);
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@DeleteMapping("/products/{productId}")
-	ResponseEntity<String> deleteProduct(@PathVariable Long productId) {
-		if(this.productService.deleteProduct(productId))
-			return ResponseEntity.ok("Product deleted successfully");
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Product does not exist");
-	}
-
-}
+	<div th:replace="fragments/menu :: menu"></div>
+	
+    <p>Product Page</p>
+  	<div th:if="${productList != null}">
+	    <h1>List of Products:</h1>
+	    <ul>
+	       <li th:each="product : ${productList}" th:text="${product.name}">test-product</li>
+	    </ul>
+	</div>
+</body>
+</html>
 
 ```
-Important concepts are:
 
-- @RestController
-- @RequestMapping
-- @GetMapping, @PutMapping, @DeleteMapping
-- ResponseEntity
-
-Question: Why use an args constructor? Why not autowire what we need into the Controller?
-
-Before going on to the services lets take a look at the Product Service.
-
-## Switch To The Product Service
+Question: Why not display HTML or Javascript on it own? PCF has a static build pack. Why put this in Spring Boot?
 
 ## Review The Services
 
-Add The Services To call the product service, cover RestTemplate
 
 ## Create The Fallback
 
