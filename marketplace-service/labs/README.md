@@ -12,4 +12,14 @@
 
 ## Building A UI Client
 
-## Linking Them Together With RestTemplate
+## Adding Database Persistence
+
+## Creating Profiles
+
+## Using RestTemplate To Communicate Between Services
+
+## Adding Security To The Coffee Service
+
+## Preparing To Deploy To PCF
+
+## Deploying To PCF
