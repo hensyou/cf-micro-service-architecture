@@ -1,5 +1,7 @@
 # Labs
 
+The following are some of hands on exercises to reinforce 
+
 ## Concepts To Learn
 1. Create a simple UI using Spring Boot and ThymeLeaf
 2. Create a simple Backing Service using Spring Boot + Flyway + H2 + Postgres
