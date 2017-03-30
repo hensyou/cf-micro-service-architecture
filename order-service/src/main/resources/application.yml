@@ -1,8 +1,5 @@
+server:
+  port: 8083
 spring:
   application:
     name: order-service
----
-spring:
-  profiles: dev
-server:
-    port: 8083

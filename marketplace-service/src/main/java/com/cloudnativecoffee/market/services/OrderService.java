@@ -1,9 +1,9 @@
 package com.cloudnativecoffee.market.services;
 
-import com.cloudnativecoffee.market.model.Order;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
@@ -12,7 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import com.cloudnativecoffee.market.model.Order;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 @Service
 public class OrderService {
@@ -27,11 +29,16 @@ public class OrderService {
 
     public OrderService(@Value("${marketplace.services.order.id}") String orderServiceHost,
                         @Value("${marketplace.services.order.api.url}") String orderBaseurl,
-                        RestTemplate restTemplate) {
+                        @Qualifier("restTemplate") RestTemplate restTemplate) {
         this.orderServiceHost = orderServiceHost;
         this.orderBaseurl = orderBaseurl;
         this.restTemplate = restTemplate;
 
+    }
+    
+    public void placeOrder(Order orderToPlace) {
+    		String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).toString();
+    		ResponseEntity.status(HttpStatus.OK).body(restTemplate.postForEntity(apiUrl, orderToPlace, Order.class).getBody());
     }
 
     @HystrixCommand(fallbackMethod = FALLBACK_METHOD,
