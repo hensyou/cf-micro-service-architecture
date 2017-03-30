@@ -48,8 +48,9 @@ public class OrderController {
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
         try {
+            LOG.info("Order placed : "+ order.toString());
             return ResponseEntity.ok(this.orderService.createOrder(order));
-        } catch(RestClientException | DataIntegrityViolationException | ConstraintViolationException e) {
+        } catch(Exception e) {
             LOG.error("error thrown during creation of order", e);
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

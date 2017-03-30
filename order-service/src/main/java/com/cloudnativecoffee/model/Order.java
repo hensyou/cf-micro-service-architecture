@@ -2,6 +2,7 @@ package com.cloudnativecoffee.model;
 
 
 import lombok.*;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
@@ -23,8 +24,10 @@ public class Order implements Serializable{
     private String orderID;
 
     @Indexed
+    @NotEmpty
     private String userName;
 
+    @NotEmpty
     private List<Product> productList = new ArrayList<Product>();
 
     private Boolean fulfilled;
