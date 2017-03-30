@@ -1,7 +1,6 @@
 package com.cloudnativecoffee.order.service;
 
 import com.cloudnativecoffee.model.Order;
-import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
 import com.cloudnativecoffee.order.repository.OrderRepo;
 import com.cloudnativecoffee.order.service.impl.OrderServiceImpl;

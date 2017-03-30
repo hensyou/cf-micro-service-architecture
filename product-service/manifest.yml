@@ -1,9 +1,11 @@
 ---
 applications:
-- name: product-service
+- name: cloudnative-coffee-product-service
   memory: 1024M
   buildpack: java_buildpack
-  domain: cfapps.io
-  host: cdp-product-service
+  path: build/libs/product-service-0.0.1-SNAPSHOT.jar
+  env:
+    CF_TARGET: https://api.run.pivotal.io
   services:
-  - postgres-db
+  - cloudnative-coffee-postgres-db
+  - cloudnative-coffee-rabbitmq

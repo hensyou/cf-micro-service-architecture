@@ -4,24 +4,34 @@ The following are some of hands on exercises to reinforce
 
 ## Concepts To Learn
 1. Create a simple UI using Spring Boot and ThymeLeaf
-2. Create a simple Backing Service using Spring Boot + Flyway + H2 + Postgres
-3. Work With Profiles
+2. Create a simple Product Backing Service using Spring Boot
+3. Create a simple Order Backing Service using Spring Boot
 4. Communicate Via Rest Between Two Services
-5. Add Security To A Spring Boot App
-6. Add Basic Authentication to RestTemplate
+5. Deploying To PCF
+6. Trouble Shooting and Monitoring
 
-## Building A Rest Service
+## Building Out The Rest Services
 
-## Building A UI Client
+Lets build out the Market Place application. 
 
-## Adding Database Persistence
+``shell
 
-## Creating Profiles
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
 
-## Using RestTemplate To Communicate Between Services
+```
 
-## Adding Security To The Coffee Service
+## Building Out The UI Client
 
 ## Preparing To Deploy To PCF
 
+## Deploy To PCF
+
+## Using RestTemplate To Communicate Between Services
+
+## Deploy To PCF
+
+## Adding Security To The Marketplace
+
 ## Deploying To PCF
+
+## Troubleshooting and Monitoring
