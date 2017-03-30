@@ -16,7 +16,7 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String home(Model model) {
-		model.addAttribute("message", "Monday :-(");
+		model.addAttribute("message", "Happy coding!");
 		return "index";
 	}
 }

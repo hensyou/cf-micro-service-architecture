@@ -30,12 +30,18 @@ security:
     resource:
       user-info-uri: http://auth-server:9999/me
 ---
-#confirm ROUTES
 spring:
   profiles: cloud
 marketplace:
   services:
     order:
-      id: https://cdp-order-service-cfapps.io
+      id: https://cloudnative-coffee-order-service.cfapps.io
     product:
-      id: https://cdp-order-service-cfapps.io
+      id: https://cloudnative-coffee-product-service.cfapps.io
+security:
+  oauth2:
+    client:
+      access-token-uri: https://cloudnative-coffee-auth-server.cfapps.io/oauth/token
+      user-authorization-uri: https://cloudnative-coffee-auth-server.cfapps.io/oauth/authorize
+    resource:
+      user-info-uri: https://cloudnative-coffee-auth-server.cfapps.io/me

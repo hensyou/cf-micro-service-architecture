@@ -1,0 +1,8 @@
+---
+applications:
+- name: cloudnative-coffee-auth-server
+  memory: 1024M
+  buildpack: java_buildpack
+  path: build/libs/auth-server-0.0.1-SNAPSHOT.jar
+  env:
+    CF_TARGET: https://api.run.pivotal.io
