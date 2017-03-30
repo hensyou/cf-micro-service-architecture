@@ -12,6 +12,14 @@ The following are some of hands on exercises to reinforce
 
 ## Building Out The Rest Services
 
+Lets build out the Market Place application. 
+
+``shell
+
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
+
+```
+
 ## Building Out The UI Client
 
 ## Preparing To Deploy To PCF
