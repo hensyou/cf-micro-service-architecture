@@ -1,0 +1,6 @@
+task build(type: GradleBuild) {
+    buildFile = 'product-service/build.gradle'
+    buildFile = 'market-place-service/build.gradle'
+    buildFile = 'order-service/build.gradle'
+    tasks = ['build']
+}
