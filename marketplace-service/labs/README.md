@@ -14,7 +14,7 @@ The following are some of hands on exercises to reinforce
 
 Lets build out the Market Place application. 
 
-``shell
+```shell
 
 curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
 
