@@ -56,11 +56,18 @@ security:
 
 ```
 
-Test for a token using the Admin Id and Secret:
+Test for a token using the Admin Id and Secret (local):
 
 ```bash
 
 curl adminclient:adminsecret@localhost:8080/oauth/token -d grant_type=client_credentials
+
+```
+Running in PCF:
+
+```bash
+
+curl adminclient:adminsecret@cloudnative-coffee-auth-server.cfapps.io/oauth/token -d grant_type=client_credentials
 
 ```
 
