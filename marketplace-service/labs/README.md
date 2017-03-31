@@ -1,6 +1,6 @@
 # Labs
 
-The following are some of hands on exercises to reinforce 
+The following are some of hands on exercises to reinforce key concepts in the Marketplace Service
 
 ## Concepts To Learn
 1. Create a simple UI using Spring Boot and ThymeLeaf
