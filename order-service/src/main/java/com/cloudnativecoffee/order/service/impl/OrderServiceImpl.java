@@ -1,6 +1,8 @@
 package com.cloudnativecoffee.order.service.impl;
 
 
+import com.cloudnativecoffee.exception.OrderCreationException;
+import com.cloudnativecoffee.exception.OrderDeletionException;
 import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
 import com.cloudnativecoffee.order.repository.OrderRepo;
@@ -9,6 +11,7 @@ import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,6 +40,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order createOrder(Order order) {
         try {
             order.setOrderId(UUID.randomUUID().toString());
@@ -44,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
             return orderRepo.save(order);
         } catch (DataIntegrityViolationException e) {
             log.error("redis save threw an error", e);
-            return new Order();
+            throw new OrderCreationException("Failed to create an order", e);
         }
     }
 
@@ -55,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
             return true;
         } catch (IllegalArgumentException e) {
             log.error("delete threw an error", e);
-            return false;
+            throw new OrderDeletionException("Failed to delete the order ", e);
         }
     }
 
