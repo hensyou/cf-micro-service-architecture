@@ -23,7 +23,8 @@ public class OrderController {
         this.orderService = checkNotNull(orderService);
     }
 
-    @GetMapping("/order")
+    @GetMapping(value = "/order" ,
+            produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrders() {
         List<Order> orderList = this.orderService.getAllOrders();
         if(orderList != null) {
@@ -34,7 +35,8 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/order/{userName}")
+    @GetMapping(value = "/order/{userName}" ,
+            produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrdersForUser(@PathVariable String userName) {
         List<Order> orderList = this.orderService.getAllOrderForUser(userName);
         if(orderList != null) {
@@ -45,7 +47,9 @@ public class OrderController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/order")
+    @PostMapping(value = "/order",
+            consumes =  "application/json",
+            produces = "application/json")
     public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
         try {
             log.info("Order placed : "+ order.toString());
