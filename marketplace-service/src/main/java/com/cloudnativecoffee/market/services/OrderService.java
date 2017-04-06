@@ -1,18 +1,23 @@
 package com.cloudnativecoffee.market.services;
 
-import com.cloudnativecoffee.market.model.Order;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import java.util.List;
+
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.List;
+import com.cloudnativecoffee.market.model.Order;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
 @Service
 public class OrderService {
@@ -27,15 +32,32 @@ public class OrderService {
 
     public OrderService(@Value("${marketplace.services.order.id}") String orderServiceHost,
                         @Value("${marketplace.services.order.api.url}") String orderBaseurl,
-                        RestTemplate restTemplate) {
+                        @Qualifier("restTemplate") RestTemplate restTemplate) {
         this.orderServiceHost = orderServiceHost;
         this.orderBaseurl = orderBaseurl;
         this.restTemplate = restTemplate;
 
     }
+    
+    public void placeOrder(Order orderToPlace) {
+    		String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).toString();
+    		ResponseEntity.status(HttpStatus.OK).body(restTemplate.postForEntity(apiUrl, createRequestEntity(orderToPlace), Order.class).getBody());
+    }
+    
+    private <T>HttpEntity<T> createRequestEntity(T jsonBody) {
+    		HttpHeaders httpHeaders = new HttpHeaders();
+    		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    		return new HttpEntity<>(jsonBody, httpHeaders);
+    }
 
-    @HystrixCommand(fallbackMethod = FALLBACK_METHOD,
-            commandProperties=@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"))
+    @HystrixCommand(
+    		fallbackMethod = FALLBACK_METHOD,
+    		commandProperties = {
+    				@HystrixProperty(name="circuitBreaker.requestVolumeThreshold",value="5"),
+    				@HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds",value="10000")
+    		}
+    		)
+    
     public ResponseEntity<List<Order>> getAllOrders() {
         ParameterizedTypeReference<List<Order>> parameterizedTypeReference = new ParameterizedTypeReference<List<Order>>() {};
         String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).toString();
@@ -43,8 +65,7 @@ public class OrderService {
     }
 
 
-    @HystrixCommand(fallbackMethod = FALLBACK_METHOD_USER_ORDER,
-            commandProperties=@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"))
+    @HystrixCommand(fallbackMethod = FALLBACK_METHOD_USER_ORDER)
     public ResponseEntity<List<Order>> getOrdersForUser(String userName) {
         ParameterizedTypeReference<List<Order>> parameterizedTypeReference = new ParameterizedTypeReference<List<Order>>() {};
         String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).append(userName).toString();

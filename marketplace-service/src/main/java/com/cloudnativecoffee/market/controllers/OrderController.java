@@ -1,17 +1,19 @@
 package com.cloudnativecoffee.market.controllers;
 
-import com.cloudnativecoffee.market.model.Order;
-import com.cloudnativecoffee.market.model.Product;
-import com.cloudnativecoffee.market.services.OrderService;
-import com.cloudnativecoffee.market.services.ProductService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
+import com.cloudnativecoffee.market.model.Order;
+import com.cloudnativecoffee.market.model.Product;
+import com.cloudnativecoffee.market.services.OrderService;
 
 @Controller
 public class OrderController {
@@ -29,5 +31,23 @@ public class OrderController {
 		model.addAttribute("orderList", orderList.getBody());
 		return "orders";
 	}
+	
+	@GetMapping("/placeOrder")
+	public String placeOrder() {
+		Order newOrder = new Order();
+		List<Product> products = new ArrayList<Product>();
+		Product product = new Product();
+		product.setName("Cappuccino");
+		product.setPrice(Double.valueOf("3.25"));
+		product.setQuantity(1);
+		product.setId(Long.valueOf("3"));
+		products.add(product);
+		newOrder.setProductList(products);
+		newOrder.setUserName("Luke");
+		orderService.placeOrder(newOrder);
+		
+		return "redirect:/orders";
+	}
+	
 
 }
