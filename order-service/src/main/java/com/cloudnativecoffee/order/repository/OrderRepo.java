@@ -8,6 +8,6 @@ import java.util.List;
 
 @Repository
 public interface OrderRepo extends CrudRepository<Order, String>{
-    
+
 	List<Order> findByUserName(String userName);
 }

@@ -11,14 +11,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@RedisHash(value = "Order", timeToLive=600)
+@RedisHash(timeToLive=600)
 //lombok
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Order implements Serializable{
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 3734899149255587948L;
 
     @Id
     private String orderId;

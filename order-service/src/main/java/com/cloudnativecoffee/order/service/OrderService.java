@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface OrderService {
 
-    List<Order> getAllOrders();
-    List<Order> getAllOrderForUser(String userName);
+    List<Order> listAllOrders();
+    List<Order> listAllOrdersForUser(String userName);
     Order createOrder(Order order);
-    boolean deleteOrder(String orderId);
+    void deleteOrder(String orderId);
     void deleteAll();
 }

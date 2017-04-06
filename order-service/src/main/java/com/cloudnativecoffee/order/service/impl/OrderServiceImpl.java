@@ -30,12 +30,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<Order> listAllOrders() {
         return Lists.newArrayList(orderRepo.findAll());
     }
 
     @Override
-    public List<Order> getAllOrderForUser(String userName) {
+    public List<Order> listAllOrdersForUser(String userName) {
         return orderRepo.findByUserName(userName);
     }
 
@@ -53,10 +53,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean deleteOrder(String orderId) {
+    public void deleteOrder(String orderId) {
         try {
             orderRepo.delete(orderId);
-            return true;
         } catch (IllegalArgumentException e) {
             log.error("delete threw an error", e);
             throw new OrderDeletionException("Failed to delete the order ", e);
