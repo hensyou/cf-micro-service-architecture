@@ -1,3 +1,6 @@
+endpoints:
+  features:
+    enabled: true
 server:
   port: 8080
 marketplace:

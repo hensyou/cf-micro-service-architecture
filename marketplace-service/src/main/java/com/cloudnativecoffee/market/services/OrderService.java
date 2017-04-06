@@ -6,8 +6,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -38,11 +41,23 @@ public class OrderService {
     
     public void placeOrder(Order orderToPlace) {
     		String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).toString();
-    		ResponseEntity.status(HttpStatus.OK).body(restTemplate.postForEntity(apiUrl, orderToPlace, Order.class).getBody());
+    		ResponseEntity.status(HttpStatus.OK).body(restTemplate.postForEntity(apiUrl, createRequestEntity(orderToPlace), Order.class).getBody());
+    }
+    
+    private <T>HttpEntity<T> createRequestEntity(T jsonBody) {
+    		HttpHeaders httpHeaders = new HttpHeaders();
+    		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+    		return new HttpEntity<>(jsonBody, httpHeaders);
     }
 
-    @HystrixCommand(fallbackMethod = FALLBACK_METHOD,
-            commandProperties=@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"))
+    @HystrixCommand(
+    		fallbackMethod = FALLBACK_METHOD,
+    		commandProperties = {
+    				@HystrixProperty(name="circuitBreaker.requestVolumeThreshold",value="5"),
+    				@HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds",value="10000")
+    		}
+    		)
+    
     public ResponseEntity<List<Order>> getAllOrders() {
         ParameterizedTypeReference<List<Order>> parameterizedTypeReference = new ParameterizedTypeReference<List<Order>>() {};
         String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).toString();
@@ -50,8 +65,7 @@ public class OrderService {
     }
 
 
-    @HystrixCommand(fallbackMethod = FALLBACK_METHOD_USER_ORDER,
-            commandProperties=@HystrixProperty(name="execution.isolation.thread.timeoutInMilliseconds", value="2000"))
+    @HystrixCommand(fallbackMethod = FALLBACK_METHOD_USER_ORDER)
     public ResponseEntity<List<Order>> getOrdersForUser(String userName) {
         ParameterizedTypeReference<List<Order>> parameterizedTypeReference = new ParameterizedTypeReference<List<Order>>() {};
         String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).append(userName).toString();

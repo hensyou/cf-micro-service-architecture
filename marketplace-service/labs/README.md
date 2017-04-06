@@ -1,6 +1,6 @@
 # Labs
 
-The following are some of hands on exercises to reinforce 
+The following are some of hands on exercises to reinforce key concepts in the Marketplace Service
 
 ## Concepts To Learn
 1. Create a simple UI using Spring Boot and ThymeLeaf
@@ -14,7 +14,7 @@ The following are some of hands on exercises to reinforce
 
 Lets build out the Market Place application. 
 
-``shell
+```shell
 
 curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
 

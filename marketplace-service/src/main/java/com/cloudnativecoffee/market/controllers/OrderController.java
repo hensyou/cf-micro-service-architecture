@@ -44,6 +44,8 @@ public class OrderController {
 		products.add(product);
 		newOrder.setProductList(products);
 		newOrder.setUserName("Luke");
+		orderService.placeOrder(newOrder);
+		
 		return "redirect:/orders";
 	}
 	
