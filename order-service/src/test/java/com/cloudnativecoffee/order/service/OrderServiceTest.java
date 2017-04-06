@@ -63,7 +63,7 @@ public class OrderServiceTest {
     private Order dummyOrderObjectCreate() {
         EnhancedRandom enhancedRandom = EnhancedRandomBuilder.aNewEnhancedRandomBuilder().build();
         Order order = enhancedRandom.nextObject(Order.class);
-        order.setOrderID(orderId);
+        order.setOrderId(orderId);
         order.setUserName("dummy-user-name");
         return order;
     }

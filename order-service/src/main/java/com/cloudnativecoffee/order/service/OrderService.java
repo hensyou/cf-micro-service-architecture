@@ -11,4 +11,5 @@ public interface OrderService {
     List<Order> getAllOrderForUser(String userName);
     Order createOrder(Order order);
     boolean deleteOrder(String orderId);
+    void deleteAll();
 }
