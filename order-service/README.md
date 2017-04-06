@@ -19,7 +19,7 @@ Add the dependencies needed for the project like
 * Stream Rabbit
 * Cloud Connectors
 * Lombok
-![alt text](Spring_Initializr.png)
+![alt text](/images/spring_initializr.png)
 
 ## Dependencies in build.gradle
 
