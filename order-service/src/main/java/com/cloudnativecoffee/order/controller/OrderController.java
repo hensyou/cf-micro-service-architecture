@@ -26,13 +26,13 @@ public class OrderController {
     @GetMapping(value = "/order" ,
             produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrders() {
-        return this.orderService.getAllOrders();
+        return ResponseEntity.ok(this.orderService.listAllOrders());
     }
 
     @GetMapping(value = "/order/{userName}" ,
             produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrdersForUser(@PathVariable String userName) {
-        return this.orderService.getAllOrderForUser(userName);
+    		return ResponseEntity.ok(this.orderService.listAllOrdersForUser(userName));    
     }
 
     @PostMapping(value = "/order",
@@ -45,9 +45,8 @@ public class OrderController {
 
     @DeleteMapping("/order/{orderId}")
     public ResponseEntity<String> deleteOrderForUser(@PathVariable String orderId) {
-        if(this.orderService.deleteOrder(orderId))
+        this.orderService.deleteOrder(orderId);
             return ResponseEntity.ok("Order deleted successfully");
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Order does not exist");
     }
 
     @DeleteMapping("/order")

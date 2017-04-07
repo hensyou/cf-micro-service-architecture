@@ -1,22 +1,24 @@
 package com.cloudnativecoffee.order.service.impl;
 
 
-import com.cloudnativecoffee.exception.OrderCreationException;
-import com.cloudnativecoffee.exception.OrderDeletionException;
-import com.cloudnativecoffee.model.Order;
-import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
-import com.cloudnativecoffee.order.repository.OrderRepo;
-import com.cloudnativecoffee.order.service.OrderService;
-import com.google.common.collect.Lists;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.List;
 import java.util.UUID;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.cloudnativecoffee.model.Order;
+import com.cloudnativecoffee.order.exception.OrderCreationException;
+import com.cloudnativecoffee.order.exception.OrderDeletionException;
+import com.cloudnativecoffee.order.messaging.OrderMessageWriter;
+import com.cloudnativecoffee.order.repository.OrderRepo;
+import com.cloudnativecoffee.order.service.OrderService;
+import com.google.common.collect.Lists;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j

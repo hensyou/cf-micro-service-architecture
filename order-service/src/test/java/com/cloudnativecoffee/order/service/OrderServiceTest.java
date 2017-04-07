@@ -41,7 +41,7 @@ public class OrderServiceTest {
     @Test
     public void verifyGetAllOrders() {
         when(orderRepo.findAll()).thenReturn(new ArrayList<Order>());
-        orderService.getAllOrders();
+        orderService.listAllOrders();
         verify(this.orderRepo, times(1)).findAll();
     }
 
