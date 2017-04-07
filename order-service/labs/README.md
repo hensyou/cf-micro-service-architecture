@@ -14,8 +14,32 @@ This service will have two rest-endpoints
 2. Docker should be installed in your system
   * Windows 7,  [use Docker Toolbox](https://www.docker.com/products/docker-toolbox). When installing, make sure to select **ALL** the install options
   * Mac,  [use docker for Mac](https://docs.docker.com/docker-for-mac/)
+  * Once the docker is running, you will need to run redis cache in docker
 
-TODO : REDIS details
+3. Once Docker is installed we need to run [Redis](https://redis.io/documentation) in docker
+add docker compose file at order-service/docker-compose.yml
+```java
+version: "3"
+services:
+ redis:
+  image: redis:alpine
+  container_name: training-redis
+  ports:
+    - "6379:6379"
+```
+  * On mac, open your terminal and run the below command
+  * On windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
+
+```java
+$ docker-compose -d up
+```
+4. Lombok Setup for IntelliJ
+This set up is required to enable Lombak annotations to work in your local IDE:
+  * Install Lombak plugin
+  * Enable annotation processing (Settings -> Build, Execution, Deployment -> Compiler -> Annotation Processors -> Enable annotation processing)
+
+5. Good to have - PostMan, from [Google webstore](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi2te35xJLTAhXn3YMKHXJmAogQFggjMAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fpostman%2Ffhbjgbiflinjbdggehcddcbncdddomop%3Fhl%3Den&usg=AFQjCNE_Yq59TT1ZExzJ68FTldg4ho_lGw&sig2=oDm4-jzg6EBrl9oqurNFIQ)
+
 
 ## Generating the spring boot application
 Go to  [Spring Initializr](http://start.spring.io/)
@@ -271,4 +295,4 @@ public class OrderController {
     }
 ```
 
-
+Let's test out the application now
