@@ -163,6 +163,24 @@ This project uses Thymeleaf, a very simple HTML attribute based templating engin
 
 ```
 
+Create a simple class to display this:
+
+```java
+
+@Controller
+public class HomeController {
+	
+
+	@GetMapping("/")
+	public String home(Model model) {
+		model.addAttribute("name", "Tug Speedman!");
+		return "index";
+	}
+
+}
+
+```
+
 ## Deploy To PCF
 
 Add a manifest like the following:
@@ -182,7 +200,89 @@ applications:
 
 ## Using RestTemplate To Communicate Between Services
 
+Lets connect the services to together adding RestTemplate.
+
+### Creating the Service Class
+
+Create a Service Class in the simple-ui list the following
+
+```java
+
+@Service
+public class ProductService {
+
+	private RestTemplate restTemplate;
+
+	public ProductService(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+
+	public List<Product> getProducts() {
+		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
+		};
+		List<Product> products = restTemplate
+				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, null, parameterizedTypeReference)
+				.getBody();
+		return products;
+	}
+}
+
+```
+Wire this into the main controller.
+
+```java
+
+@Controller
+public class HomeController {
+	
+	private ProductService productService;
+	
+	public HomeController(ProductService productService) {
+		this.productService = productService;
+	}
+
+
+
+
+	@GetMapping("/")
+	public String home(Model model) {
+		List<Product> products = productService.getProducts();
+		model.addAttribute("products", products);
+		return "index";
+	}
+
+}
+
+```
+
+Update the UI to reflect the new change.
+
+```html
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Simple UI</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	
+	<p>Here is what we have today!</p>
+    
+    <table>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.name}">1</td>
+    </tr>
+    </table>
+    
+</body>
+</html>
+
+```
+
 ## Deploy To PCF
+
+Rebuild the UI service and push it to PCF again.
 
 ## Adding Security To The Marketplace
 
