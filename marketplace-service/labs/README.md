@@ -16,9 +16,12 @@ Lets build out the Market Place application.
 
 ```shell
 
-curl https://start.spring.io/starter.tgz -d style=web,thymeleaf -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
 
 ```
+
+If you are using start.spring.io, simply select the following projects.
+
 
 ## Building Out The UI Client
 
