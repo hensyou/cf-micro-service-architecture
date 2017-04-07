@@ -5,19 +5,6 @@ In this course we will create a simple Cloud Native Architecture. In completing 
 
 Has completed PCF Developer training 
 
-# Agenda
-
-The course run 8 hours starting at 9am sharp and completing at 5pm.
-
-1. Introductions and House Keeping - 10 minutes
-2. Git and Gradle Overview - 45 minutes
-3. Break - 10 minutes
-4. Testing - 45 minutes
-5. Break - 10 minutes
-6. Accelerator Pipeline - 45 minutes
-7. Lunch Break - 1 hours
-8. Hands on Spring Cloud Native Workshop - 4 hours
-
 ## Key Technologies and Patterns Reviewed
 
 Through out the course the following will be covered:
@@ -36,7 +23,7 @@ Through out the course the following will be covered:
 
 This course is designed to reinforce concepts already reviewed and learned and give a direction on where to go to learn more. This course is for developers who will be building and running applications on Pivotal Cloud Foundry.
 
-## What We Are Building
+## Reference Application
 
 ![Architecture](/images/architecture.png)
 
