@@ -5,19 +5,6 @@ In this course we will create a simple Cloud Native Architecture. In completing 
 
 Has completed PCF Developer training 
 
-# Agenda
-
-The course run 8 hours starting at 9am sharp and completing at 5pm.
-
-1. Introductions and House Keeping - 10 minutes
-2. Git and Gradle Overview - 45 minutes
-3. Break - 10 minutes
-4. Testing - 45 minutes
-5. Break - 10 minutes
-6. Accelerator Pipeline - 45 minutes
-7. Lunch Break - 1 hours
-8. Hands on Spring Cloud Native Workshop - 4 hours
-
 ## Key Technologies and Patterns Reviewed
 
 Through out the course the following will be covered:
@@ -36,7 +23,7 @@ Through out the course the following will be covered:
 
 This course is designed to reinforce concepts already reviewed and learned and give a direction on where to go to learn more. This course is for developers who will be building and running applications on Pivotal Cloud Foundry.
 
-## What We Are Building
+## Reference Application
 
 ![Architecture](/images/architecture.png)
 
@@ -104,21 +91,23 @@ To get Lombok running we need to do two things:
 1. Install it into the IDE (https://projectlombok.org/download.html)
 2. Add it as a Gradle dependancies: compileOnly "org.projectlombok:lombok:1.16.14"
 
-## Services
+## Running This Application
 
-We will develop locally and deploy to PCF. Deployment can be to PCF Dev or PWS. Services will be made available via the PCF market place on PCF Dev or PWS.
+The application can be ran locally (running Spring Boot or PCF Dev) on in a hosted PCF (in this case PWS).
 
-### PWS Account
+## PWS Account
 
 To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS:
 
 http://run.pivotal.io/
 
-### PCF Dev
+## PCF Dev
 
 You can develop locally against PCF Dev while providing a similar development experience as PWS. It does require 6GB of memory to be free:
 
 https://pivotal.io/pcf-dev
+
+To run this application on locally or in PWS the following Services are required.
 
 ### Postgres
 
@@ -150,6 +139,26 @@ docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3.6.6-management
 #### Cloud
 
 PWS's market place offers Rabbit as does PCF Dev
+
+### Redis
+
+Redis is used as a system of record for the Order service.
+
+#### Development
+
+Redis can be installed locally:
+
+https://redis.io/topics/quickstart
+
+There is also a Docker image:
+
+https://hub.docker.com/_/redis/
+
+#### Cloud
+
+PWS market place offers a Redis services
+
+
 
 
 
