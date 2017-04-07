@@ -121,6 +121,59 @@ Restart your application and try some of the end points:
 - http://localhost:8080/health
 - http://localhost:8080/env
 
+### Add Swagger For Testing
+
+Swagger is a great way to test rest end points. In this case we only have one end point, it will not always be that way :-)
+
+#### Add the following to your dependancies
+
+Add to your build.gradle the following:
+
+```shell
+
+compile("io.springfox:springfox-swagger2:2.6.1")
+compile("io.springfox:springfox-swagger-ui:2.6.1")
+
+```
+
+#### Add the configuration for Swagger
+
+Create a class called SwaggerConfig and add the following:
+
+```java
+
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+@Configuration
+@EnableSwagger2
+public class SwaggerConfig {
+	
+	@Bean
+    public Docket api() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.sample"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+}
+
+
+```
+The Swagger Endpoints can now be tested at this URL:
+
+http://localhost:8080/swagger-ui.html
+
+
 ### Deploy to Cloud Foundry
 
 Create a file in the root of the project called 'manifest.yml'. Add the following to this file:
