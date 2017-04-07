@@ -290,23 +290,61 @@ Create a Service Class in the ui-service with the following.
 
 ```java
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+
+/**
+ * @author lshannon
+ *
+ */
 @Service
 public class ProductService {
 
 	private RestTemplate restTemplate;
-
+	
+	@Value("${product.service.host}")
+	private String product_service_host;
+	
 	public ProductService(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
 	}
+	
 
+	@HystrixCommand(fallbackMethod = "fallBack", commandProperties = {
+			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
+			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
 	public List<Product> getProducts() {
 		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
 		};
+		
 		List<Product> products = restTemplate
-				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, null, parameterizedTypeReference)
+				.exchange(product_service_host + "v1/product", HttpMethod.GET, null, parameterizedTypeReference)
 				.getBody();
 		return products;
 	}
+
+	public List<Product> fallBack() {
+		List<Product> product = new ArrayList<Product>();
+		Product product1 = new Product();
+		product1.setName("Rocket Ship");
+		product.add(product1);
+		return product;
+	}
+
 }
 
 ```
