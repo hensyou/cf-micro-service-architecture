@@ -91,21 +91,23 @@ To get Lombok running we need to do two things:
 1. Install it into the IDE (https://projectlombok.org/download.html)
 2. Add it as a Gradle dependancies: compileOnly "org.projectlombok:lombok:1.16.14"
 
-## Services
+## Running This Application
 
-We will develop locally and deploy to PCF. Deployment can be to PCF Dev or PWS. Services will be made available via the PCF market place on PCF Dev or PWS.
+The application can be ran locally (running Spring Boot or PCF Dev) on in a hosted PCF (in this case PWS).
 
-### PWS Account
+## PWS Account
 
 To get the full Cloud Native experience, create an account on PWS for free to complete these labs. This is PCF running in AWS:
 
 http://run.pivotal.io/
 
-### PCF Dev
+## PCF Dev
 
 You can develop locally against PCF Dev while providing a similar development experience as PWS. It does require 6GB of memory to be free:
 
 https://pivotal.io/pcf-dev
+
+To run this application on locally or in PWS the following Services are required.
 
 ### Postgres
 
@@ -137,6 +139,26 @@ docker run -d -p 15672:15672 -p 5672:5672 rabbitmq:3.6.6-management
 #### Cloud
 
 PWS's market place offers Rabbit as does PCF Dev
+
+### Redis
+
+Redis is used as a system of record for the Order service.
+
+#### Development
+
+Redis can be installed locally:
+
+https://redis.io/topics/quickstart
+
+There is also a Docker image:
+
+https://hub.docker.com/_/redis/
+
+#### Cloud
+
+PWS market place offers a Redis services
+
+
 
 
 
