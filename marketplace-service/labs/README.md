@@ -126,7 +126,7 @@ applications:
 
 ```
 
-Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, add a 
+Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, add a `host` entry to the manifest.yml file.
 
 
 ## Building Out The UI Client
@@ -135,7 +135,7 @@ Lets build out a basic UI.
 
 ```shell
 
-curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.cloudnativecoffee -d name=marketplace-service -d type=gradle-project | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.sample -d name=simple-ui -d type=gradle-project | tar -xzvf -
 
 ```
 
@@ -163,10 +163,22 @@ This project uses Thymeleaf, a very simple HTML attribute based templating engin
 
 ```
 
-
-## Preparing To Deploy To PCF
-
 ## Deploy To PCF
+
+Add a manifest like the following:
+
+```shell
+
+---
+applications:
+- name: simple-ui
+  memory: 1024M
+  buildpack: java_buildpack
+  path: target/simple-ui-0.0.1-SNAPSHOT.jar
+  routes:
+  - route: simple-ui.cfapps.io
+
+```
 
 ## Using RestTemplate To Communicate Between Services
 
