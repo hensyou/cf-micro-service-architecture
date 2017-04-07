@@ -378,6 +378,133 @@ public class ProductService {
 
 Rebuild the project and deploy to PCF. To test this, kill the product-service. You should get a rocket ship.
 
-## Adding Security To The Marketplace
+## Adding Security To The Product Service
 
-## Deploying To PCF
+Update the gradle of the product service to have the following'
+
+```shell
+
+compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.5.2.RELEASE'
+
+```
+
+Next add a security configuration class
+
+```java
+
+	@Configuration
+	@EnableWebSecurity
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Value("${username}")
+	private String admin_username;
+
+	@Value("${password}")
+	private String admin_password;
+
+	@Value("${role}")
+	private String admin_role;
+	
+	 @Override
+	  protected void configure(HttpSecurity http) throws Exception {
+	    http.authorizeRequests().anyRequest().fullyAuthenticated();
+	    http.httpBasic();
+	    http.csrf().disable();
+	  }
+
+
+	/**
+	 * We are using the in-memory for now
+	 */
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.inMemoryAuthentication().withUser(admin_username).password(admin_password).roles(admin_role);
+	}
+}
+
+```
+
+Update the application.properties/application.yml to contain the following:
+
+```shell
+
+username: admin
+password: admin
+role: USER
+
+```
+
+Rebuild and redeploy. Now we cannot hit the end point without supplying credentials (Postman can be used to simulate this). Note, when testing in the browser, ensure to use In Cognito windows
+
+Rebuild and redeploy this application.
+
+## Update the UI Application
+
+Added the credentials to the application.properties/application.yml
+
+```shell
+
+endpoints.sensitive=false
+server.port=8090
+username: admin
+password: admin
+
+```
+A better approach to sharing configurations like this is to use Config Server:
+
+https://docs.pivotal.io/spring-cloud-services/1-3/common/config-server/
+
+Update the Service to add an authentication header:
+
+```java
+
+@Service
+public class ProductService {
+
+	private RestTemplate restTemplate;
+	
+	@Value("${username}")
+	private String admin_username;
+
+	@Value("${password}")
+	private String admin_password;
+
+	public ProductService(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+	
+	  private HttpHeaders getHeaders(){
+	        String plainCredentials= admin_username + ":" + admin_password;
+	        String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
+	         
+	        HttpHeaders headers = new HttpHeaders();
+	        headers.add("Authorization", "Basic " + base64Credentials);
+	        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+	        return headers;
+	    }
+
+	@HystrixCommand(fallbackMethod = "fallBack", commandProperties = {
+			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
+			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
+	public List<Product> getProducts() {
+		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
+		};
+		 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
+		List<Product> products = restTemplate
+				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, request, parameterizedTypeReference)
+				.getBody();
+		return products;
+	}
+
+	public List<Product> fallBack() {
+		List<Product> product = new ArrayList<Product>();
+		Product product1 = new Product();
+		product1.setName("Rocket Ship");
+		product.add(product1);
+		return product;
+	}
+
+}
+
+```
+Recompile and deploy to PWS to test
