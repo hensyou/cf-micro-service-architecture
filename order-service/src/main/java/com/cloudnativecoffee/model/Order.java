@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@RedisHash(timeToLive=600)
+@RedisHash("Order")
 //lombok
 @Data
 @NoArgsConstructor

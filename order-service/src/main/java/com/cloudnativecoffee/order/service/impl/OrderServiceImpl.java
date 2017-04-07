@@ -44,6 +44,7 @@ public class OrderServiceImpl implements OrderService {
     public Order createOrder(Order order) {
         try {
             order.setOrderId(UUID.randomUUID().toString());
+            order.setFulfilled(false);
             orderMessageWriter.write(order);
             return orderRepo.save(order);
         } catch (DataIntegrityViolationException e) {

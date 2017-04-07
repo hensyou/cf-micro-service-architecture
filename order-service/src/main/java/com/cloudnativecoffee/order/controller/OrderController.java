@@ -26,38 +26,21 @@ public class OrderController {
     @GetMapping(value = "/order" ,
             produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrders() {
-        List<Order> orderList = this.orderService.getAllOrders();
-        if(orderList != null) {
-            log.info("All orders returned");
-            return ResponseEntity.ok(orderList);
-        }
-        log.info("No ordered found");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return this.orderService.getAllOrders();
     }
 
     @GetMapping(value = "/order/{userName}" ,
             produces = "application/json")
     public ResponseEntity<List<Order>> listAllOrdersForUser(@PathVariable String userName) {
-        List<Order> orderList = this.orderService.getAllOrderForUser(userName);
-        if(orderList != null) {
-            log.info("Orders for user returned "+userName);
-            return ResponseEntity.ok(orderList);
-        }
-        log.info("No ordered found for user "+userName);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return this.orderService.getAllOrderForUser(userName);
     }
 
     @PostMapping(value = "/order",
             consumes =  "application/json",
             produces = "application/json")
     public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
-        try {
-            log.info("Order placed : "+ order.toString());
-            return ResponseEntity.ok(this.orderService.createOrder(order));
-        } catch(Exception e) {
-            log.error("error thrown during creation of order", e);
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        log.info("Order placed : "+ order.toString());
+        return ResponseEntity.ok(this.orderService.createOrder(order));
     }
 
     @DeleteMapping("/order/{orderId}")
