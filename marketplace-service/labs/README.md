@@ -110,7 +110,23 @@ Restart your application and try some of the end points:
 
 ### Deploy to Cloud Foundry
 
-Ensure to clean and build your Gradle project and then deploy to PWS using the cf command line or the 
+Create a file in the root of the project called 'manifest.yml'. Add the following to this file:
+
+```shell
+
+---
+applications:
+- name: product-service
+  memory: 1024M
+  buildpack: java_buildpack
+  path: target/product-service-0.0.1-SNAPSHOT.jar
+  routes:
+  - route: product-service.cfapps.io
+
+
+```
+
+Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, add a 
 
 
 ## Building Out The UI Client
