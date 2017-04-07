@@ -1,14 +1,16 @@
-# Labs
+# Lab 1
 
 The following are some of hands on exercises to reinforce key concepts in the Marketplace Service
 
 ## Concepts To Learn
-1. Create a simple UI using Spring Boot and ThymeLeaf
-2. Create a simple Product Backing Service using Spring Boot
-3. Communicate Via Rest Between Two Services
-4. Wrapping a service call with circuit breaker
-5. Deploying To PCF
-6. Working with Basic Security
+1. Get Experience with Spring Boot 
+2. Create a simple UI using Spring Boot and ThymeLeaf
+3. Create a simple Product Backing Service using Spring Boot
+4. Communicate Via Rest Between Two Services
+5. Wrapping a service call with circuit breaker
+6. Deploying To PCF
+7. Working with Basic Security
+8. Learn about Spring Profiles
 
 ## Building Out The Rest Services
 
@@ -464,6 +466,8 @@ Rebuild the project and deploy to PCF. To test this, kill the product-service. Y
 
 ## Adding Security To The Product Service
 
+### Add the Spring Security Dependancy
+
 Update the gradle of the product service to have the following'
 
 ```shell
@@ -471,6 +475,8 @@ Update the gradle of the product service to have the following'
 compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '1.5.2.RELEASE'
 
 ```
+
+### Add the Spring Security Configuration
 
 Next add a security configuration class
 
@@ -508,6 +514,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 ```
 
+### Add The Security Configuration
+
 Update the application.properties/application.yml to contain the following:
 
 ```shell
@@ -518,13 +526,17 @@ role: USER
 
 ```
 
+### Redeploy to PCF
+
 Rebuild and redeploy. Now we cannot hit the end point without supplying credentials (Postman can be used to simulate this). Note, when testing in the browser, ensure to use In Cognito windows
 
 Rebuild and redeploy this application.
 
 ## Update the UI Application
 
-Added the credentials to the application.yml
+### Update The UI Service Configuration
+
+Add the credentials to the application.yml
 
 ```shell
 
@@ -548,6 +560,9 @@ product.service.host: https://product-service.cfapps.io/
 A better approach to sharing configurations like this is to use Config Server:
 
 https://docs.pivotal.io/spring-cloud-services/1-3/common/config-server/
+
+
+### Update The RestTemplate call to include an Authentication Header
 
 Update the Service to add an authentication header:
 
@@ -625,4 +640,7 @@ public class ProductService {
 
 }
 ```
+
+### Redeploy To PCF
+
 Recompile and deploy to PWS to test
