@@ -12,16 +12,25 @@ The following are some of hands on exercises to reinforce key concepts in the Ma
 
 ## Building Out The Rest Services
 
-Lets create a basic Rest Client.
+### Create The Project
+
+Lets create a basic Rest Client (product-service), this can be done from the command line if you have curl.
 
 ```shell
 
 curl https://start.spring.io/starter.tgz -d style=web,actuator -d groupId=com.sample -d name=product-service -d type=gradle-project | tar -xzvf -
 
 ```
-If you are using start.spring.io, simply select the following projects.
+It can also be done using start.spring.io, you can select the projects on the form (this is what the curl command posts too).
 
 ![Architecture](images/project_create.png)
+
+Lastly you can create it with a wizard in STS or IntelliJ.
+
+![Architecture](images/sts_project_create.png)
+
+Once created, import the project into your workspace (using Import Gradle/Maven). If you made this project using an IDE plugin, it will already be created.
+
 
 ### Create The Model Object
 
@@ -63,6 +72,8 @@ public class Product {
 
 Optionally this can be converted to Lombok to dramatically reduce the lines of code in the object definition. Why would this matter?
 
+https://projectlombok.org/download.html
+
 ### Create the Rest Endpoint
 
 Create a class called Product Controller.
@@ -94,7 +105,7 @@ Start your application and test the end point at: http://localhost:8080/v1/produ
 
 ### Enable Actuator
 
-Add the following to your application.properties/application.yml
+Add the following to your application.properties.
 
 ```shell
 
@@ -126,16 +137,18 @@ applications:
 
 ```
 
-Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, add a `host` entry to the manifest.yml file.
+Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, update the `route` name to be more unique in the manifest.yml file.
 
 
 ## Building Out The UI Client
 
-Lets build out a basic UI. 
+### Creating the Project
+
+Lets build out a basic UI.  We will call this ui-service.
 
 ```shell
 
-curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.sample -d name=simple-ui -d type=gradle-project | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.sample -d name=ui-service -d type=gradle-project | tar -xzvf -
 
 ```
 
@@ -144,6 +157,8 @@ If you are using start.spring.io, simply select the following projects.
 ![Architecture](images/project_create.png)
 
 Once created, import into your IDE of choice (ie: import existing Gradle project).
+
+### Adding A Thymeleaf Template
 
 This project uses Thymeleaf, a very simple HTML attribute based templating engine. Lets add our basic UI. Inside of src/main/resources/templates, create a file called index.html and paste the following into it.
 
@@ -163,7 +178,9 @@ This project uses Thymeleaf, a very simple HTML attribute based templating engin
 
 ```
 
-Create a simple class to display this:
+### Adding A Simple Controller
+
+Create a simple class to display the index page and put some data into it:
 
 ```java
 
@@ -181,9 +198,9 @@ public class HomeController {
 
 ```
 
-## Deploy To PCF
+### Deploy To PCF
 
-Add a manifest like the following:
+Add a manifest to the root of the project, and put the following:
 
 ```shell
 
@@ -197,12 +214,13 @@ applications:
   - route: simple-ui.cfapps.io
 
 ```
+Do a clean/build and then `cf push` the application to your PCF space.
 
-## Using RestTemplate To Communicate Between Services
+### Using RestTemplate To Communicate Between Services
 
 Lets connect the services to together adding RestTemplate.
 
-### Wire In A RestTemplate
+#### Wire In A RestTemplate
 
 Update your main class to have the following bean definition.
 
@@ -224,7 +242,7 @@ public class UiServiceApplication {
 
 ```
 
-### Creating the Service Class
+#### Creating the Service Class
 
 Create a Service Class in the simple-ui list the following
 
