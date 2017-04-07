@@ -22,6 +22,8 @@ curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d grou
 
 If you are using start.spring.io, simply select the following projects.
 
+![Architecture](/images/project_create.png)
+
 
 ## Building Out The UI Client
 
