@@ -307,10 +307,6 @@ import org.springframework.web.client.RestTemplate;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
-/**
- * @author lshannon
- *
- */
 @Service
 public class ProductService {
 
@@ -323,10 +319,6 @@ public class ProductService {
 		this.restTemplate = restTemplate;
 	}
 	
-
-	@HystrixCommand(fallbackMethod = "fallBack", commandProperties = {
-			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
-			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
 	public List<Product> getProducts() {
 		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
 		};
@@ -335,14 +327,6 @@ public class ProductService {
 				.exchange(product_service_host + "v1/product", HttpMethod.GET, null, parameterizedTypeReference)
 				.getBody();
 		return products;
-	}
-
-	public List<Product> fallBack() {
-		List<Product> product = new ArrayList<Product>();
-		Product product1 = new Product();
-		product1.setName("Rocket Ship");
-		product.add(product1);
-		return product;
 	}
 
 }
