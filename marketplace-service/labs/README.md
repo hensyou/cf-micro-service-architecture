@@ -101,7 +101,7 @@ public class ProductController {
 
 ```
 
-Start your application and test the end point at: http://localhost:8080/v1/product
+Start your application (using java -jar target/product-service-0.0.1-SNAPSHOT.jar or in your IDE) and test the end point at: http://localhost:8080/v1/product
 
 ### Enable Actuator
 
@@ -198,6 +198,18 @@ public class HomeController {
 
 ```
 
+### Update Tomcat Port For A Local Test
+
+In the application.properties add the following:
+
+```shell
+
+server.port=8089
+
+```
+
+This will allow you to run both services locally when testing without a port conflict.
+
 ### Deploy To PCF
 
 Add a manifest to the root of the project, and put the following:
@@ -242,9 +254,37 @@ public class UiServiceApplication {
 
 ```
 
+#### Set Up Profiles For The Product Service Route
+
+In the same directory as application.properties (src/main/resources), create a file called application.yml. Once created, delete your application.yml.
+
+Add the following to your application.yml:
+
+```shell
+
+endpoints:
+  sensitive: false
+
+server:
+  port: 8089
+product.service.host: http://localhost:8080/
+
+---
+spring:
+  profiles: cloud
+
+product.service.host: https://product-service.cfapps.io/
+
+```
+PCF will run the `cloud` profile. This will allow you to test locally and via PCF seamlessly. If you needed to update the Route in your product manifest for it to push (ie: it was not unique), you will need to up-date the `product.service.host` accordingly.
+
+A better approach to sharing configurations like this is to use Config Server:
+
+https://docs.pivotal.io/spring-cloud-services/1-3/common/config-server/
+
 #### Creating the Service Class
 
-Create a Service Class in the simple-ui list the following
+Create a Service Class in the ui-service with the following.
 
 ```java
 
@@ -294,6 +334,7 @@ public class HomeController {
 }
 
 ```
+#### Update The UI
 
 Update the UI to reflect the new change.
 
@@ -320,11 +361,11 @@ Update the UI to reflect the new change.
 
 ```
 
-## Deploy To PCF
+#### Deploy To PCF
 
 Rebuild the UI service and push it to PCF again.
 
-## Adding A Circuit To the Call
+### Adding A Circuit To the Call
 
 In the event the product service goes dowm, we want an intelligent fallback. Hystrix will give us this.
 
@@ -360,10 +401,34 @@ Now add the Hystrix configurations to your service class.
 
 ```java
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+
+/**
+ * @author lshannon
+ *
+ */
 @Service
 public class ProductService {
 
 	private RestTemplate restTemplate;
+	
+	@Value("${product.service.host}")
+	private String product_service_host;
 
 	public ProductService(RestTemplate restTemplate) {
 		this.restTemplate = restTemplate;
@@ -373,10 +438,12 @@ public class ProductService {
 			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
 			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
 	public List<Product> getProducts() {
+		
 		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
 		};
+		
 		List<Product> products = restTemplate
-				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, null, parameterizedTypeReference)
+				.exchange(product_service_host + "v1/product", HttpMethod.GET, null, parameterizedTypeReference)
 				.getBody();
 		return products;
 	}
@@ -391,10 +458,9 @@ public class ProductService {
 
 }
 
-
 ```
 
-Rebuild the project and deploy to PCF. To test this, kill the product-service. You should get a rocket ship.
+Rebuild the project and deploy to PCF. To test this, kill the product-service. You should get your fallback, which is a rocketship. Not bad, although could be expensive if you are giving these away everytime a service fails ;-)
 
 ## Adding Security To The Product Service
 
@@ -458,14 +524,25 @@ Rebuild and redeploy this application.
 
 ## Update the UI Application
 
-Added the credentials to the application.properties/application.yml
+Added the credentials to the application.yml
 
 ```shell
 
-endpoints.sensitive=false
-server.port=8090
+endpoints:
+  sensitive: false
+
+server:
+  port: 8089
+  
 username: admin
 password: admin
+product.service.host: http://localhost:8080/
+
+---
+spring:
+  profiles: cloud
+
+product.service.host: https://product-service.cfapps.io/
 
 ```
 A better approach to sharing configurations like this is to use Config Server:
@@ -476,10 +553,34 @@ Update the Service to add an authentication header:
 
 ```java
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+
+/**
+ * @author lshannon
+ *
+ */
 @Service
 public class ProductService {
 
 	private RestTemplate restTemplate;
+	
+	@Value("${product.service.host}")
+	private String product_service_host;
 	
 	@Value("${username}")
 	private String admin_username;
@@ -509,7 +610,7 @@ public class ProductService {
 		};
 		 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
 		List<Product> products = restTemplate
-				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, request, parameterizedTypeReference)
+				.exchange(product_service_host + "v1/product", HttpMethod.GET, request, parameterizedTypeReference)
 				.getBody();
 		return products;
 	}
@@ -523,6 +624,5 @@ public class ProductService {
 	}
 
 }
-
 ```
 Recompile and deploy to PWS to test
