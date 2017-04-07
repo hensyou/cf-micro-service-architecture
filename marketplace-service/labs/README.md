@@ -5,10 +5,10 @@ The following are some of hands on exercises to reinforce key concepts in the Ma
 ## Concepts To Learn
 1. Create a simple UI using Spring Boot and ThymeLeaf
 2. Create a simple Product Backing Service using Spring Boot
-3. Create a simple Order Backing Service using Spring Boot
-4. Communicate Via Rest Between Two Services
+3. Communicate Via Rest Between Two Services
+4. Wrapping a service call with circuit breaker
 5. Deploying To PCF
-6. Trouble Shooting and Monitoring
+6. Working with Basic Security
 
 ## Building Out The Rest Services
 
@@ -202,6 +202,28 @@ applications:
 
 Lets connect the services to together adding RestTemplate.
 
+### Wire In A RestTemplate
+
+Update your main class to have the following bean definition.
+
+```java
+
+@SpringBootApplication
+public class UiServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UiServiceApplication.class, args);
+	}
+	
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+}
+
+
+```
+
 ### Creating the Service Class
 
 Create a Service Class in the simple-ui list the following
@@ -284,8 +306,78 @@ Update the UI to reflect the new change.
 
 Rebuild the UI service and push it to PCF again.
 
+## Adding A Circuit To the Call
+
+In the event the product service goes dowm, we want an intelligent fallback. Hystrix will give us this.
+
+Add the following to your build.gradle
+
+```shell
+
+compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-hystrix', version: '1.2.6.RELEASE'
+
+```
+
+Enable Circuit Breaker by adding the following annotation to your main Spring Boot class.
+
+```java
+
+@SpringBootApplication
+@EnableCircuitBreaker
+public class UiServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(UiServiceApplication.class, args);
+	}
+	
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplate();
+	}
+}
+
+```
+
+Now add the Hystrix configurations to your service class.
+
+```java
+
+@Service
+public class ProductService {
+
+	private RestTemplate restTemplate;
+
+	public ProductService(RestTemplate restTemplate) {
+		this.restTemplate = restTemplate;
+	}
+
+	@HystrixCommand(fallbackMethod = "fallBack", commandProperties = {
+			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
+			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
+	public List<Product> getProducts() {
+		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
+		};
+		List<Product> products = restTemplate
+				.exchange("http://localhost:8080/v1/product", HttpMethod.GET, null, parameterizedTypeReference)
+				.getBody();
+		return products;
+	}
+
+	public List<Product> fallBack() {
+		List<Product> product = new ArrayList<Product>();
+		Product product1 = new Product();
+		product1.setName("Rocket Ship");
+		product.add(product1);
+		return product;
+	}
+
+}
+
+
+```
+
+Rebuild the project and deploy to PCF. To test this, kill the product-service. You should get a rocket ship.
+
 ## Adding Security To The Marketplace
 
 ## Deploying To PCF
-
-## Troubleshooting and Monitoring
