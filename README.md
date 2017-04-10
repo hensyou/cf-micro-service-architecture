@@ -1,9 +1,27 @@
 # Cloud Native Developer Training Course
 In this course we will create a simple Cloud Native Architecture. In completing this task key technologies and cloud native patterns will be reviewed.
 
-# Prerequisites
+# Prerequisites For Labs
 
-Has completed PCF Developer training 
+1. Has completed PCF Developer training
+2. Java JDK 8 Installed
+3. STS or IntelliJ
+
+## Java 8 JDK Download
+
+http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+## IntelliJ
+
+https://www.jetbrains.com/idea/
+
+## STS Windows 64 Bit:
+
+http://download.springsource.com/release/STS/3.8.4.RELEASE/dist/e4.6/spring-tool-suite-3.8.4.RELEASE-e4.6.3-win32-x86_64.zip
+
+## Mac 64 Bit
+
+http://download.springsource.com/release/STS/3.8.4.RELEASE/dist/e4.6/spring-tool-suite-3.8.4.RELEASE-e4.6.3-macosx-cocoa-x86_64.tar.gz
 
 ## Key Technologies and Patterns Reviewed
 
