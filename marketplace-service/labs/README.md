@@ -553,6 +553,10 @@ compile group: 'org.springframework.boot', name: 'spring-boot-starter-security',
 
 ### Add the Spring Security Configuration
 
+Before securing our application we need the dependancies:
+
+compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
+
 Next add a security configuration class
 
 ```java
@@ -600,6 +604,12 @@ password: admin
 role: USER
 
 ```
+
+We have harded coded the username and password for the application to a properties file in the application. Obviously this is best practise. Most likely this type of information will be injected into the environment via the Pipeline.
+
+#### Optional
+
+Try moving these properties to environment variables in the container using the cf set-env command. You will know it works when you can remote the settings in the properties file and still be able to authenticate into the application with the username and password you have set as an environmental variable.
 
 ### Redeploy to PCF
 
