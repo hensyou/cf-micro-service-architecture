@@ -198,6 +198,7 @@ Next we can update security to allow access to the console.
 
 @Override
 	public void configure(HttpSecurity http) throws Exception {
+		http.httpBasic();
 		http
 			.headers().frameOptions().disable()
 			.and()
@@ -249,6 +250,9 @@ Now push the application into PCF using the CLI or the STS plugin. In the logs y
 
 After the push is completed, view your /env endpoint, in the details returned you will see it is now connect to your DB.
 
+You can now test your endpoint to ensure the data is there. The Postgres Services we used also spins up a management console where we can see data in the DB.
+
+![h2](images/elephant-query.png)
 
 
 
