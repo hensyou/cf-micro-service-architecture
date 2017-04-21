@@ -13,23 +13,6 @@ In this lab we will create a new simple service that we can send a message to, a
   * Mac,  [use docker for Mac](https://docs.docker.com/docker-for-mac/)
   * Once the docker is running, you will need to run redis cache in docker
 
-3. Once Docker is installed we need to run [Redis](https://redis.io/documentation) in docker
-add docker compose file at order-service/docker-compose.yml
-```java
-version: "3"
-services:
- redis:
-  image: redis:alpine
-  container_name: training-redis
-  ports:
-    - "6379:6379"
-```
-  * On Mac, open your terminal and run the below command
-  * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
-
-```java
-$ docker-compose -d up
-```
 4. Lombok Setup for IntelliJ
 This set up is required to enable Lombak annotations to work in your local IDE:
   * Install Lombok plugin
@@ -52,12 +35,8 @@ Add the dependencies needed for the project like
 * Cloud Connectors [read more on cloud connectors](http://cloud.spring.io/spring-cloud-connectors/)
 * Lombok [read more on Lombok](https://projectlombok.org/)
 * Redis [read more on Redis](https://redis.io/)
-
-
 ![alt text](images/spring-initializer-inventory-service.png)
-
 ### Dependencies in build.gradle
-
 Once the project has been generated, it will be downloaded to your system as a zip file. Extract it to any prefered location. Open the project in your favorite IDE.
 You will see that the basic project structure will be made for you.
 Take a look at **build.gradle**. In the code snippet below you can see all the dependencies have been added.
@@ -65,11 +44,11 @@ Take a look at **build.gradle**. In the code snippet below you can see all the d
 ```java
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-amqp')
-	compile('org.springframework.boot:spring-boot-starter-cloud-connectors')
-	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
-	compileOnly('org.projectlombok:lombok')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+  compile('org.springframework.boot:spring-boot-starter-amqp')
+  compile('org.springframework.boot:spring-boot-starter-cloud-connectors')
+  compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+  compileOnly('org.projectlombok:lombok')
+  testCompile('org.springframework.boot:spring-boot-starter-test')
 }
 
 ```
@@ -104,6 +83,31 @@ Let's restart the server. You should see the following line in the console
 com.sample.InventoryServiceApplication   : The following profiles are active: dev
 ```
 
+### [OPTIONAL] Running RabbitMQ and Redis instances in your machine using docker
+Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
+
+Add docker compose file at inventory-service/docker-compose.yml
+```yml
+version: "3"
+services:
+ redis:
+  image: redis:alpine
+  container_name: training-redis
+  ports:
+    - "6379:6379"
+ rabbitmq:
+  image: rabbitmq:3.6.6-management
+  container_name: training-rabbitmq
+  ports:
+    - "15672:15672"
+    - "5672:5672"
+```
+  * On Mac, open your terminal and run the below command
+  * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
+
+```shell
+$ docker-compose up -d
+```
 ### Creating The Model
 
 Create a 'model' package to add to your pojo classes.
@@ -296,7 +300,7 @@ send the following JSON
 POST localhost:8084/v1/inventory
 ```json
 {
-	"productName" : "Hammer of Thor"
+  "productName" : "Hammer of Thor"
 }
 ```
 You can not try the GET endpoint again, to see the above inventory added.
@@ -472,4 +476,3 @@ Clean build both the applications and redeploy to PCF. Make sure to bind RabbitM
 
 Now, run the application and check the logs to see if the product name send from inventory-place service is logged at product-service.
 Also, now to can try wiring up simple-ui service to inventory-service and play around with it :-)
-
