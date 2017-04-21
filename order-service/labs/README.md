@@ -1,10 +1,10 @@
 # Lab 3
 
-In this lab we will create a new service that we can send a message too and then persist the data in that message to Redis.
+In this lab we will create a new simple service that we can send a message to, and then persist the data in this message to Redis.
 
 ## Concepts To Learn
 1. Working with Repositories using a different backing data store
-2. Adding Messaging
+2. Adding Messaging using RabbitMQ
 
 ### Pre-Requisites for running in local [Optional]
 1. Java 8
@@ -24,8 +24,8 @@ services:
   ports:
     - "6379:6379"
 ```
-  * On mac, open your terminal and run the below command
-  * On windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
+  * On Mac, open your terminal and run the below command
+  * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
 
 ```java
 $ docker-compose -d up
@@ -38,12 +38,12 @@ This set up is required to enable Lombak annotations to work in your local IDE:
 5. Good to have - PostMan, from [Google webstore](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi2te35xJLTAhXn3YMKHXJmAogQFggjMAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fpostman%2Ffhbjgbiflinjbdggehcddcbncdddomop%3Fhl%3Den&usg=AFQjCNE_Yq59TT1ZExzJ68FTldg4ho_lGw&sig2=oDm4-jzg6EBrl9oqurNFIQ)
 
 
-### Generating the spring boot application
+### Generating the Spring Boot Application
 Go to  [Spring Initializr](http://start.spring.io/)
 Please read the following instructions before generating the project.
-On the screenshot below there are couple of important points to note
+On the screenshot below there are couple of important points to note:
 * Select Gradle project
-* Do not change the spring boot version (It always defaults to the latest 1.5.2 )
+* Do not change the spring boot version (it always defaults to the latest. At the moment of writing, the latest version is 1.5.2 )
 * Search for dependencies, see examples of dependencies on the right side of the screenshot
 
 Add the dependencies needed for the project like
@@ -54,13 +54,13 @@ Add the dependencies needed for the project like
 * Redis [read more on Redis](https://redis.io/)
 
 
-![alt text](Spring_Initializr.png)
+![alt text](images/spring-initializer-inventory-service.png)
 
 ### Dependencies in build.gradle
 
 Once the project has been generated, it will be downloaded to your system as a zip file. Extract it to any prefered location. Open the project in your favorite IDE.
 You will see that the basic project structure will be made for you.
-Take a look at the **build.gradle**. In the code snippet below you can see all the dependencies has been added.
+Take a look at **build.gradle**. In the code snippet below you can see all the dependencies have been added.
 
 ```java
 
@@ -92,9 +92,9 @@ server:
 ```
 A YAML file is actually a sequence of documents separated by --- lines, and each document is parsed separately to a flattened map.
 
-If a YAML document contains a spring.profiles key, then the profiles value (comma-separated list of profiles) is fed into the Spring Environment.acceptsProfiles() and if any of those profiles are active, then that document is included in the final merge (otherwise not).
+If a YAML document contains a spring.profiles key, then the profiles value (comma-separated list of profiles) is fed into the Spring Environment.acceptsProfiles(), and if any of those profiles are active, then that document is included in the final merge (otherwise not).
 
-Once this is done, add the below line to your run configuration or to your application.properties\ run configurations
+Once this is done, add the line below to your run configuration or to your application.properties\ run configurations
 
 ```java
 spring.profiles.active:dev
@@ -127,9 +127,9 @@ public class Order implements Serializable{
     private Boolean fulfilled;
 }
 ```
-Note the lombok annotations! you can check out the various functionalities of lombok [here](https://projectlombok.org/).
+Note the lombok annotations! You can check out the various functionalities of lombok [here](https://projectlombok.org/).
 
-### Create a Repository for CRUD operations
+### Create a Repository for CRUD Operations
 
 Let's create a repository to perform CRUD operation on the order object. For this we will create a package called **repository** in our project struture. Add an interface **OrderRepository**.
 This class should be annotated with @Repository annotation.
@@ -156,7 +156,7 @@ Spring Data JPA also allows you to define other query methods by simply declarin
 In a typical Java application, you’d expect to write a class that implements InventoryRepository. But that’s what makes Spring Data JPA so powerful: You don’t have to write an implementation of the repository interface. Spring Data JPA creates an implementation on the fly when you run the application.
 More details of spring JPA repositories can be found here - [Getting Started with Spring JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 
-### Adding Redis cache to our application
+### Adding Redis Cache to our Application
 Inorder to add the redis cache functionality, let's change our POJO order class. All we need to do is add the RedisHash annotation to :
 src/main/java/com/sample/model/Inventory.java
 
@@ -288,7 +288,7 @@ public class InventoryController {
 ```
 NOTE: You can add swaggerUI if needed. Instructions can be found in Lab 1.
 
-Let's test out the application now end point at: localhost:8084/v1/inventory. You should be seeying an empty list, the first time.
+Let's test out the application now. The end point will be: localhost:8084/v1/inventory. You should be seeying an empty list, the first time.
 Pre-requisite:  you will need a redis instance running in your local machine. In case you don't have it setup, you can jump on to `Deploy to Cloud Foundry` section.
 
 The create endpoint should also work, from PostMan
@@ -454,9 +454,13 @@ public class MessageListener {
     @StreamListener(value = "inventoryChannel")
     @Transactional
     public void process(String productName) {
-        log.info("product Name recieved" + productName);
+        log.info("product Name recieved " + productName);
     }
 }
+```
+Don't forget to add @EnableBinding to product-service application.
+```java
+@EnableBinding(ProductChannels.class)
 ```
 ### Adding the service in manifest files
 
@@ -466,4 +470,7 @@ Don't forget to add the service in manifest file of both Inventory-service and P
 ```
 
 Clean build both the applications and redeploy to PCF. Make sure to bind RabbitMQ service from marketplace.
+
+Now, run the application and check the logs to see if the product name send from inventory-place service is logged at product-service.
+Also, now to can try wiring up simple-ui service to inventory-service and play around with it :-)
 
