@@ -256,7 +256,7 @@ You can now test your endpoint to ensure the data is there. The Postgres Service
 
 ## Adding Flyway
 
-This approach 
+This approach is not 
 
 
 
