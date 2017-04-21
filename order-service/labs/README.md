@@ -54,7 +54,7 @@ Add the dependencies needed for the project like
 * Redis [read more on Redis](https://redis.io/)
 
 
-![alt text](Spring_Initializr.png)
+![alt text](images/spring-initializer-inventory-service.png)
 
 ### Dependencies in build.gradle
 
