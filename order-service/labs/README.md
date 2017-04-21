@@ -54,7 +54,7 @@ Add the dependencies needed for the project like
 * Redis [read more on Redis](https://redis.io/)
 
 
-![alt text](images/spring-initializer-inventory-service.png)
+![alt text](Spring_Initializr.png)
 
 ### Dependencies in build.gradle
 
@@ -101,7 +101,7 @@ spring.profiles.active:dev
 ```
 Let's restart the server. You should see the following line in the console
 ```java
-.training.OrderServiceApplication     : The following profiles are active: dev
+com.sample.InventoryServiceApplication   : The following profiles are active: dev
 ```
 
 ### Creating The Model
@@ -110,7 +110,6 @@ Create a 'model' package to add to your pojo classes.
 Let's make the model class have the following variables :
 * id;
 * productName;
-* status;
 
 at /src/main/java/com/sample/model/Inventory.java
 ```java
@@ -119,19 +118,20 @@ at /src/main/java/com/sample/model/Inventory.java
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order implements Serializable{
+@Builder
+public class Inventory implements Serializable {
     private static final long serialVersionUID = 3734899149255587948L;
 
-    private String orderId;
-    private String userName;
-    private Boolean fulfilled;
+    private String id;
+    @NotEmpty
+    private String productName;
 }
 ```
 Note the lombok annotations! You can check out the various functionalities of lombok [here](https://projectlombok.org/).
 
 ### Create a Repository for CRUD Operations
 
-Let's create a repository to perform CRUD operation on the order object. For this we will create a package called **repository** in our project struture. Add an interface **OrderRepository**.
+Let's create a repository to perform CRUD operation on the order object. For this we will create a package called **repository** in our project struture. Add an interface **InventoryRepository**.
 This class should be annotated with @Repository annotation.
 
 What does this annotation do?
@@ -189,7 +189,6 @@ public class Inventory implements Serializable {
     @Indexed
     @NotEmpty
     private String productName;
-    private boolean status;
 }
 ```
 RedisHash marks Objects as aggregate roots to be stored in a Redis hash.
@@ -288,7 +287,7 @@ public class InventoryController {
 ```
 NOTE: You can add swaggerUI if needed. Instructions can be found in Lab 1.
 
-Let's test out the application now. The end point will be: localhost:8084/v1/inventory. You should be seeying an empty list, the first time.
+Let's test out the application now. The end point will be: `localhost:8084/v1/inventory` You should be seeying an empty list, the first time.
 Pre-requisite:  you will need a redis instance running in your local machine. In case you don't have it setup, you can jump on to `Deploy to Cloud Foundry` section.
 
 The create endpoint should also work, from PostMan
@@ -297,7 +296,7 @@ send the following JSON
 POST localhost:8084/v1/inventory
 ```json
 {
-	"productName" : "PowerPuff girls"
+	"productName" : "Hammer of Thor"
 }
 ```
 You can not try the GET endpoint again, to see the above inventory added.
@@ -309,7 +308,7 @@ Create a file in the root of the project called 'manifest.yml'. Add the followin
 ```shell
 ---
 applications:
-- name: hopper-training-inventory-service
+- name: inventory-service
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/inventory-service-0.0.1-SNAPSHOT.jar

@@ -54,7 +54,7 @@ Add the dependencies needed for the project like
 * Redis [read more on Redis](https://redis.io/)
 
 
-![alt text](images/spring-initializer-inventory-service.png)
+![alt text](Spring_Initializr.png)
 
 ### Dependencies in build.gradle
 
@@ -101,7 +101,7 @@ spring.profiles.active:dev
 ```
 Let's restart the server. You should see the following line in the console
 ```java
-.training.OrderServiceApplication     : The following profiles are active: dev
+com.sample.InventoryServiceApplication   : The following profiles are active: dev
 ```
 
 ### Creating The Model
@@ -110,7 +110,6 @@ Create a 'model' package to add to your pojo classes.
 Let's make the model class have the following variables :
 * id;
 * productName;
-* status;
 
 at /src/main/java/com/sample/model/Inventory.java
 ```java
@@ -119,25 +118,26 @@ at /src/main/java/com/sample/model/Inventory.java
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order implements Serializable{
+@Builder
+public class Inventory implements Serializable {
     private static final long serialVersionUID = 3734899149255587948L;
 
-    private String orderId;
-    private String userName;
-    private Boolean fulfilled;
+    private String id;
+    @NotEmpty
+    private String productName;
 }
 ```
 Note the lombok annotations! You can check out the various functionalities of lombok [here](https://projectlombok.org/).
 
 ### Create a Repository for CRUD Operations
 
-Let's create a repository to perform CRUD operation on the order object. For this we will create a package called **repository** in our project struture. Add an interface **OrderRepository**.
+Let's create a repository to perform CRUD operation on the order object. For this we will create a package called **repository** in our project struture. Add an interface **InventoryRepository**.
 This class should be annotated with @Repository annotation.
 
 What does this annotation do?
 Indicates that the beans will be eligible for persistence exception translation.
 
-The interface should extend CrudRepository, as it will be leveraging CRUD functionalities.
+The interface should extend CrudRepository, as it will be leveraging CRUD functionalities. 
 
 at /src/main/java/com/sample/repository/InventoryRepository.java
 ```java
@@ -151,7 +151,7 @@ public interface InventoryRepository extends CrudRepository<Inventory, String> {
 ```
 **InventoryRepository** extends the CrudRepository interface. The type of entity and ID that it works with,Inventory and String, are specified in the generic parameters on CrudRepository. By extending CrudRepository, InventoryRepository inherits several methods for working with Inventory persistence, including methods for saving, deleting, and finding Inventory entities.
 
-Spring Data JPA also allows you to define other query methods by simply declaring their method signature.
+Spring Data JPA also allows you to define other query methods by simply declaring their method signature. 
 
 In a typical Java application, you’d expect to write a class that implements InventoryRepository. But that’s what makes Spring Data JPA so powerful: You don’t have to write an implementation of the repository interface. Spring Data JPA creates an implementation on the fly when you run the application.
 More details of spring JPA repositories can be found here - [Getting Started with Spring JPA](https://spring.io/guides/gs/accessing-data-jpa/)
@@ -189,7 +189,6 @@ public class Inventory implements Serializable {
     @Indexed
     @NotEmpty
     private String productName;
-    private boolean status;
 }
 ```
 RedisHash marks Objects as aggregate roots to be stored in a Redis hash.
@@ -286,9 +285,9 @@ public class InventoryController {
     }
 }
 ```
-NOTE: You can add swaggerUI if needed. Instructions can be found in Lab 1.
+NOTE: You can add swaggerUI if needed. Instructions can be found in Lab 1. 
 
-Let's test out the application now. The end point will be: localhost:8084/v1/inventory. You should be seeying an empty list, the first time.
+Let's test out the application now. The end point will be: `localhost:8084/v1/inventory` You should be seeying an empty list, the first time.
 Pre-requisite:  you will need a redis instance running in your local machine. In case you don't have it setup, you can jump on to `Deploy to Cloud Foundry` section.
 
 The create endpoint should also work, from PostMan
@@ -297,7 +296,7 @@ send the following JSON
 POST localhost:8084/v1/inventory
 ```json
 {
-  "productName" : "PowerPuff girls"
+  "productName" : "Hammer of Thor"
 }
 ```
 You can not try the GET endpoint again, to see the above inventory added.
@@ -309,7 +308,7 @@ Create a file in the root of the project called 'manifest.yml'. Add the followin
 ```shell
 ---
 applications:
-- name: hopper-training-inventory-service
+- name: inventory-service
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/inventory-service-0.0.1-SNAPSHOT.jar
@@ -342,7 +341,7 @@ The Cloud Foundry Connector is part of the Spring Cloud Connectors project.
 
 create a package 'messaging'
 at /src/main/java/com/sample/messaging/InventoryChannel.java
-```java
+```java 
 package com.sample.messaging;
 
 import org.springframework.cloud.stream.annotation.Input;
@@ -377,7 +376,7 @@ public interface MessageWriter {
 
 ### Binding the channel to application
 
-In InventoryServiceApplication.java. Add the following annotation.
+In InventoryServiceApplication.java. Add the following annotation. 
 ```java
 @EnableBinding(InventoryChannel.class)
 ```
@@ -462,7 +461,7 @@ Don't forget to add @EnableBinding to product-service application.
 ```java
 @EnableBinding(ProductChannels.class)
 ```
-### Adding the service in manifest files
+### Adding the service in manifest files 
 
 Don't forget to add the service in manifest file of both Inventory-service and Product-service
 ```shell
@@ -471,6 +470,6 @@ Don't forget to add the service in manifest file of both Inventory-service and P
 
 Clean build both the applications and redeploy to PCF. Make sure to bind RabbitMQ service from marketplace.
 
-Now, run the application and check the logs to see if the product name send from inventory-place service is logged at product-service.
+Now, run the application and check the logs to see if the product name send from inventory-place service is logged at product-service. 
 Also, now to can try wiring up simple-ui service to inventory-service and play around with it :-)
 
