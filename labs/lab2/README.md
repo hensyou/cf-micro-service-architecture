@@ -169,23 +169,41 @@ Restart the application and test. Note in the logs that H2 is being used. Spring
 
 We can now test the UI for Hiberate to see our data. Spring Boot exposes an H2 UI.
 
-### Update Security For The H2 Console
+### Enable and Configure H2 Console
 
-Before we can view the console, we need to update the security file. Update your security config to allows traffic to H2.
+Before we can view the console, update the console and update security to allows access to it.
+
+Update the application.properties/yml to include the following setting:
+
+```shell
+
+spring.h2.console.enabled=true
+
+```
+Next we can update security to allow access to the console.
 
 ```java
 
- @Override
-	  protected void configure(HttpSecurity http) throws Exception {
-	    http.authorizeRequests().anyRequest().fullyAuthenticated();
-	    http.httpBasic();
-	    http.csrf().disable();
-	    //added for h2
-	    http.headers().frameOptions().disable();
-	    http.authorizeRequests().antMatchers("/h2-console/**");
-	  }
-
+@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http
+			.headers().frameOptions().disable()
+			.and()
+			.antMatcher("/**")
+		      .authorizeRequests()
+		        .antMatchers("/h2-console/**")
+		        .permitAll()
+		      .anyRequest()
+		       .authenticated();
+		http.csrf().disable();
+	}
 ```
+Restart your application after making this change. You will now be able to use the h2-console:
+
+http://localhost:8080/h2-console/
+
+
+
 
 
 
