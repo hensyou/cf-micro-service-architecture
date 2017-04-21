@@ -93,6 +93,32 @@ public interface ProductRepo extends CrudRepository<Product, Long> {
 
 ```
 
+## Add Some Logic To Write To The DB
+
+Update the main method to include a method to create a CommandLineRunner bean. This will be executed each time the application starts.
+
+```java
+
+@SpringBootApplication
+public class ProductServiceApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProductServiceApplication.class, args);
+	}
+	
+	@Bean
+	public CommandLineRunner demo(ProductRepo repo) {
+		return (args) -> {
+			repo.save(new Product(Long.valueOf(1), "DB Car"));
+			repo.save(new Product(Long.valueOf(2), "DB Live Dinosaur"));
+		};
+	}
+}
+
+
+
+```
+
 
 
 
