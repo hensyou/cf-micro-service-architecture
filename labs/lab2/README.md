@@ -216,6 +216,41 @@ http://localhost:8080/h2-console/
 
 ![h2](images/h2-console.png)
 
+## Create a Data Source In Cloud Foundry
+
+Using the CLI (or the web portal), create a DB service.
+
+```shell
+
+➜  cf-micro-service-architecture git:(master) cf create-service elephantsql turtle product-db
+Creating service instance product-db in org cloud-native / space development as luke.shannon@gmail.com...
+OK
+
+```
+
+Update the manifest.yml file to include the ser
+
+```shell
+
+---
+applications:
+- name: shannon-product-service
+  memory: 1024M
+  buildpack: java_buildpack
+  path: target/product-service-0.0.1-SNAPSHOT.jar
+  routes:
+  - route: shannon-product-service.cfapps.io
+  services:
+    - product-db
+
+```
+
+Now push the application into PCF using the CLI or the STS plugin. In the logs you will see the binding of the DB to your application. This puts the credentials of the newly created DB into the VCAPS entry of your container. Spring Boot will detect this is wire your DB connection to use this. H2 is ignored.
+
+After the push is completed, view your /env endpoint, in the details returned you will see it is now connect to your DB.
+
+
+
 
 
 
