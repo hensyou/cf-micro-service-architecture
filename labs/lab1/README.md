@@ -185,7 +185,7 @@ applications:
 - name: product-service
   memory: 1024M
   buildpack: java_buildpack
-  path: target/product-service-0.0.1-SNAPSHOT.jar
+  path: build/libs/product-service-0.0.1-SNAPSHOT.jar
   routes:
   - route: product-service.cfapps.io
 
@@ -274,7 +274,7 @@ applications:
 - name: simple-ui
   memory: 1024M
   buildpack: java_buildpack
-  path: target/simple-ui-0.0.1-SNAPSHOT.jar
+  path: build/libs/simple-ui-0.0.1-SNAPSHOT.jar
   routes:
   - route: simple-ui.cfapps.io
 
