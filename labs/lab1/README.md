@@ -29,7 +29,7 @@ It can also be done using start.spring.io, you can select the projects on the fo
 
 Lastly you can create it with a wizard in STS or IntelliJ.
 
-![Architecture](images/sts_project_create.png)
+![Architecture](images/sts_create_project.png)
 
 Once created, import the project into your workspace (using Import Gradle/Maven). If you made this project using an IDE plugin, it will already be created.
 
