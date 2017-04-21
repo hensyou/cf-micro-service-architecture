@@ -308,7 +308,7 @@ Hibernate: create table product (id bigint not null, name varchar(255), primary 
 ```
 By viewing h2-console, the migration table can be seen. This is how Flyway knows when to run a script. 
 
-![h2](images/h2-console.png)
+![h2](images/flyway.png)
 
 Setting 'flyway.clean-on-validation-error=true' in the application.properties is useful when testing locally.
 
