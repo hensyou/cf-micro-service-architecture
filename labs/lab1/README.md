@@ -207,9 +207,7 @@ curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d grou
 
 ```
 
-If you are using start.spring.io, simply select the following projects.
-
-![Architecture](images/project_create.png)
+If you are using start.spring.io, simply select the following projects: web, actuator, thymeleaf
 
 Once created, import into your IDE of choice (ie: import existing Gradle project).
 
