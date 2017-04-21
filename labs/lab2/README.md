@@ -260,8 +260,53 @@ The way we have been working is not reccomended when you need tighter control ov
 
 ### Add the flyway dependancy
 
+Add the dependancy for Flyway
 
+```shell
 
+compile('org.flywaydb:flyway-core:4.1.2')
+
+```
+### Configure Flyway
+
+In the resources folder create a folder called db. Instead of this create a folder called migration. With in the migration folder create a file called 'V1__init.sql'
+
+```sql
+
+CREATE TABLE product (
+    id     integer,
+    name    varchar(40)
+);
+
+```
+
+Run the application again locally. Flyway working with the schema can now be seen.
+
+```shell
+
+017-04-21 12:30:44.371[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.core.internal.util.VersionPrinter   [0;39m [2m:[0;39m Flyway 3.2.1 by Boxfuse
+[2m2017-04-21 12:30:44.501[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.c.i.dbsupport.DbSupportFactory      [0;39m [2m:[0;39m Database: jdbc:h2:mem:product (H2 1.4)
+[2m2017-04-21 12:30:44.538[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.core.internal.command.DbValidate    [0;39m [2m:[0;39m Validated 1 migration (execution time 00:00.009s)
+[2m2017-04-21 12:30:44.657[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.c.i.metadatatable.MetaDataTableImpl [0;39m [2m:[0;39m Creating Metadata table: "PUBLIC"."schema_version"
+[2m2017-04-21 12:30:44.677[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.core.internal.command.DbMigrate     [0;39m [2m:[0;39m Current version of schema "PUBLIC": << Empty Schema >>
+[2m2017-04-21 12:30:44.678[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.core.internal.command.DbMigrate     [0;39m [2m:[0;39m Migrating schema "PUBLIC" to version 1 - init
+[2m2017-04-21 12:30:44.687[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.f.core.internal.command.DbMigrate     [0;39m [2m:[0;39m Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.031s).
+[2m2017-04-21 12:30:44.780[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mj.LocalContainerEntityManagerFactoryBean[0;39m [2m:[0;39m Building JPA container EntityManagerFactory for persistence unit 'default'
+[2m2017-04-21 12:30:44.799[0;39m [32m INFO[0;39m [35m7499[0;39m [2m---[0;39m [2m[           main][0;39m [36mo.hibernate.jpa.internal.util.LogHelper [0;39m [2m:[0;39m HHH000204: Processing PersistenceUnitInfo [
+	name: default
+
+```
+By viewing h2-console, the migration table can be seen. This is how Flyway knows when to run a script. 
+
+![h2](images/h2-console.png)
+
+Setting 'flyway.clean-on-validation-error=true' in the application.properties is useful when testing locally.
+
+Deploying to the Cloud will produce the same results.
+
+To see the power of Flyway with DB migrations, refer to the following log:
+
+https://spring.io/blog/2016/05/31/zero-downtime-deployment-with-a-database
 
 
 
