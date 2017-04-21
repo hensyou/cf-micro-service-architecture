@@ -78,6 +78,23 @@ public class Product {
 
 NOTE: This would work with a Lombok class as well
 
+## Create the Repository Class
+
+Create a new Class that looks like the following:
+
+```java
+
+
+import org.springframework.data.repository.CrudRepository;
+
+public interface ProductRepo extends CrudRepository<Product, Long> {
+
+}
+
+```
+
+
+
 
 
 
