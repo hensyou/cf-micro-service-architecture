@@ -309,7 +309,7 @@ public class UiServiceApplication {
 
 #### Set Up Profiles For The Product Service Route
 
-In the same directory as application.properties (src/main/resources), create a file called application.yml. Once created, delete your application.yml.
+In the same directory as application.properties (src/main/resources), create a file called application.yml. Once created, delete your application.properties.
 
 Add the following to your application.yml:
 
