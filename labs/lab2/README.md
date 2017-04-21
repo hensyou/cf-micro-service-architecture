@@ -144,6 +144,18 @@ private ProductRepo productRepo;
 
 ```
 
+## Add Some Useful Settings
+
+In application.properties, add the following:
+
+```shell
+
+spring.jpa.generate-ddl=true
+spring.jpa.show-sql=true
+spring.datasource.url=jdbc:h2:mem:product;DB_CLOSE_DELAY=-1
+
+```
+
 Restart the application and test. Note in the logs that H2 is being used. Spring Boot has created all the wiring to use Hiberate, H2 and Java persistence.
 
 ```shell
@@ -201,6 +213,8 @@ Next we can update security to allow access to the console.
 Restart your application after making this change. You will now be able to use the h2-console:
 
 http://localhost:8080/h2-console/
+
+![h2](images/h2-console.png)
 
 
 
