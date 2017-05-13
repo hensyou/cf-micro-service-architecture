@@ -38,13 +38,13 @@ spring:
 marketplace:
   services:
     order:
-      id: https://cloudnative-coffee-order-service.cfapps.io
+      id: https://coffee-order-service.cfapps.io
     product:
-      id: https://cloudnative-coffee-product-service.cfapps.io
+      id: https://coffee-product-service.cfapps.io
 security:
   oauth2:
     client:
-      access-token-uri: https://cloudnative-coffee-auth-server.cfapps.io/oauth/token
-      user-authorization-uri: https://cloudnative-coffee-auth-server.cfapps.io/oauth/authorize
+      access-token-uri: https://coffee-auth-service.cfapps.io/oauth/token
+      user-authorization-uri: https://coffee-auth-service.cfapps.io/oauth/authorize
     resource:
-      user-info-uri: https://cloudnative-coffee-auth-server.cfapps.io/me
+      user-info-uri: https://coffee-auth-service.cfapps.io/me

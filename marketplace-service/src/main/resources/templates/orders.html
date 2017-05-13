@@ -11,9 +11,31 @@
     <p>Order Page</p>
     <div th:if="${orderList != null}">
         <h1>List of Orders:</h1>
-        <ul>
-            <li th:each="order : ${orderList}" th:text="${order.orderID}">test-product</li>
-        </ul>
+        <table>
+        		 <tr><th>Order Name</th></tr>
+        		<tr th:each="order : ${orderList}">
+        			<td th:text="${order.userName}"></td>
+        			<td>
+	        			<table th:each="product : ${order.productList}">
+	        				<tr>
+	        					<th>Id</th>
+	        					<th>Name</th>
+	        					<th>Price</th>
+	        				</tr>
+	        				<tr>
+	        					<td th:text="${product.id}"></td>
+	        					<td th:text="${product.name}"></td>
+	        					<td th:text="${product.price}"></td>
+	        				</tr>
+	        				<tr>
+	        					<th>Id</th>
+	        					<th>Name</th>
+	        					<th>Price</th>
+	        				</tr>
+	        			</table>
+        			</td>
+        		</tr>
+        </table>
     </div>
 </body>
 </html>

@@ -29,6 +29,7 @@ public class OrderController {
 		LOGGER.info("Entered orders");
 		ResponseEntity<List<Order>> orderList = orderService.getAllOrders();
 		model.addAttribute("orderList", orderList.getBody());
+		LOGGER.info("Orders returned: " + orderList.getBody().toString());
 		return "orders";
 	}
 	

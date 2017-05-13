@@ -68,8 +68,8 @@ public class OrderService {
     @HystrixCommand(fallbackMethod = FALLBACK_METHOD_USER_ORDER)
     public ResponseEntity<List<Order>> getOrdersForUser(String userName) {
         ParameterizedTypeReference<List<Order>> parameterizedTypeReference = new ParameterizedTypeReference<List<Order>>() {};
-        String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).append(userName).toString();
-        return ResponseEntity.status(HttpStatus.OK).body(restTemplate.exchange(apiUrl, HttpMethod.GET, null, parameterizedTypeReference).getBody());
+        //String apiUrl = new StringBuilder().append(orderServiceHost).append(orderBaseurl).append(userName).toString();
+        return ResponseEntity.status(HttpStatus.OK).body(restTemplate.exchange("https://coffee-order-service.cfapps.io/v1/order/Luke", HttpMethod.GET, null, parameterizedTypeReference).getBody());
     }
 
     public ResponseEntity<List<Order>> genericErrorMessage(Throwable exception) {

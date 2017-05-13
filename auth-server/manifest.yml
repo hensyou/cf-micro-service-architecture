@@ -1,6 +1,6 @@
 ---
 applications:
-- name: cloudnative-coffee-auth-server
+- name: coffee-auth-service
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/auth-server-0.0.1-SNAPSHOT.jar
