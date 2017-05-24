@@ -2,11 +2,8 @@ package com.cloudnativecoffee.order.controller;
 
 
 import static com.google.common.base.Preconditions.checkNotNull;
-
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

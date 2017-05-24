@@ -3,16 +3,23 @@
 <head>
     <title>Cloud Native Coffee: A Hopper Presentation</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	
+	<link href="navbar.css" rel="stylesheet"/>
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap-theme.min.css"/>
+
 </head>
 <body>
-
-	<div th:replace="fragments/menu :: menu"></div>
 	
-	<p>
-		Click here to place an order:
-	</p>
-	<form action="/placeOrder">
-    		<input type="submit" value="Place Order" />
-	</form>
+	<div class="container">
+		<div th:replace="fragments/menu :: menu"></div>
+		
+		<p>
+			Click here to place an order for 1 Cappuccino
+		</p>
+		<form action="/placeOrder">
+			<button type="submit" class="btn">Place Order</button>
+		</form>
+	</div>
 </body>
 </html>

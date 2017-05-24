@@ -33,6 +33,8 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.security:spring-security-jwt')
+	compile("org.webjars:bootstrap:3.3.7")
+	compile("org.webjars:jquery:3.2.0")
 	compile('org.springframework.cloud:spring-cloud-starter-hystrix:1.2.6.RELEASE')
 	compile('org.springframework.security.oauth:spring-security-oauth2')
 	compileOnly('org.projectlombok:lombok:1.16.14')
