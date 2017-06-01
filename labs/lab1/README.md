@@ -279,12 +279,12 @@ Add a manifest to the root of the project, and put the following:
 
 ---
 applications:
-- name: simple-ui
+- name: ui-service
   memory: 1024M
   buildpack: java_buildpack
-  path: build/libs/simple-ui-0.0.1-SNAPSHOT.jar
+  path: build/libs/ui-service-0.0.1-SNAPSHOT.jar
   routes:
-  - route: simple-ui.cfapps.io
+  - route: ui-service.cfapps.io
 
 ```
 Do a clean/build and then `cf push` the application to your PCF space.
