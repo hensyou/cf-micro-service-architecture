@@ -388,7 +388,9 @@ public class ProductService {
 }
 
 ```
-Wire this into the main controller.
+#### Using the Service Class in the Home Controller
+
+Wire the Service into the HomeController class created earlier.
 
 ```java
 
