@@ -251,7 +251,7 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String home(Model model) {
-		model.addAttribute("name", "Tug Speedman!");
+		model.addAttribute("name", "Scott Lang");
 		return "index";
 	}
 
