@@ -83,7 +83,7 @@ https://projectlombok.org/download.html
 
 ### Create the Rest Endpoint
 
-Create a class called Product Controller.
+Create a class called 'ProductController'.
 
 Add the following:
 
