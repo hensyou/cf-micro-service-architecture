@@ -558,11 +558,7 @@ compile group: 'org.springframework.boot', name: 'spring-boot-starter-security',
 
 ### Add the Spring Security Configuration
 
-Before securing our application we need the dependancies:
-
-compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-
-Next add a security configuration class
+Add a security configuration class
 
 ```java
 
@@ -610,7 +606,7 @@ role: USER
 
 ```
 
-We have harded coded the username and password for the application to a properties file in the application. Obviously this is best practise. Most likely this type of information will be injected into the environment via the Pipeline.
+We have hard coded the username and password for the application to a properties file in the application. Obviously this is not best practise. Most likely this type of information will be injected into the environment via the Pipeline.
 
 #### Optional
 
