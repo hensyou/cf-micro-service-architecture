@@ -156,7 +156,7 @@ spring.datasource.url=jdbc:h2:mem:product;DB_CLOSE_DELAY=-1
 
 ```
 
-Restart the application and test. Note in the logs that H2 is being used. Spring Boot has created all the wiring to use Hiberate, H2 and Java persistence.
+Restart the application and test. Note in the logs that H2 is being used. Spring Boot has created all the wiring to use Hibernate, H2 and Java persistence.
 
 ```shell
 
@@ -179,7 +179,7 @@ Restart the application and test. Note in the logs that H2 is being used. Spring
 
 ## View The Database
 
-We can now test the UI for Hiberate to see our data. Spring Boot exposes an H2 UI.
+We can now test the UI for Hibernate to see our data. Spring Boot exposes an H2 UI.
 
 ### Enable and Configure H2 Console
 
