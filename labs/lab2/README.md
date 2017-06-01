@@ -269,7 +269,7 @@ compile('org.flywaydb:flyway-core:4.1.2')
 ```
 ### Configure Flyway
 
-In the resources folder create a folder called db. Inside of this create a folder called migration. Within the migration folder create a file called 'V1__init.sql'
+In the resources folder create a folder called db. Inside of this folder, create a folder called migration. Flyway knows to run scripts located within this folder.  Within the migration folder create a file called 'V1__init.sql'.  
 
 ```sql
 
@@ -306,7 +306,7 @@ Hibernate: create table product (id bigint not null, name varchar(255), primary 
 2017-04-21 12:30:45.263  INFO 7499 --- [           main] org.hibernate.tool.hbm2ddl.SchemaExport  : HHH000230: Schema export complete
 
 ```
-By viewing h2-console, the migration table can be seen. This is how Flyway knows when to run a script. 
+By viewing h2-console, the product table can be seen.
 
 ![h2](images/flyway.png)
 
