@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
+ * Controller for the Index/Home page
  * @author lshannon
  *
  */
@@ -16,7 +17,6 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String home(Model model) {
-		model.addAttribute("message", "Happy coding!");
 		return "index";
 	}
 }

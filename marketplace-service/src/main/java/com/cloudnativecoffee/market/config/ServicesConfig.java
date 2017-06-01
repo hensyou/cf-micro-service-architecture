@@ -13,6 +13,11 @@ import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @EnableOAuth2Client
+/**
+ * Configures rest templates to talk to the backing services
+ * @author lshannon
+ *
+ */
 public class ServicesConfig {
 
 	@Bean(name="oauthRestTemplate")
@@ -23,7 +28,7 @@ public class ServicesConfig {
 	
 	@Bean(name="restTemplate")
 	RestTemplate restTemplate(RestTemplateBuilder builder) {
-		return builder.build();
+		return builder.basicAuthorization("admin", "admin").build();
 	}
 
 

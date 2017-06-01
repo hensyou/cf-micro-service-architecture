@@ -24,50 +24,11 @@ echo "Running: https://api.run.pivotal.io"
 echo "This is running PCF on AWS"
 echo " "
 echo " "
-echo "Services To Push:"
-echo "1. Authorization Service"
-echo "2. Marketplace Service"
-echo "3. Order Service"
-echo "4. Product Service"
-echo " "
-echo "Deploying Authorization Server: $CURRENT_DIR/auth-server"
-cd $CURRENT_DIR/auth-server
-echo "Building the service"
+echo " Deploying $CURRENT_DIR"
 ./gradlew clean build
-echo "Pushing auth-server"
+echo "Pushing To PCF"
 echo "Manifest for deployment: "
 echo " "
-writeManifest $CURRENT_DIR/auth-server/manifest.yml
-cf push
-echo " "
-echo "Deploying Marketplace Service: $CURRENT_DIR/marketplace-service"
-echo "Building The Service"
-cd $CURRENT_DIR/marketplace-service
-./gradlew clean build
-echo "Pushing Marketplace Service"
-echo "Manifest for deployment: "
-echo " "
-writeManifest $CURRENT_DIR/marketplace-service/manifest.yml
-echo " "
-cf push
-echo " "
-echo "Deploying Product Service: $CURRENT_DIR/product-service"
-echo "Building The Service"
-cd $CURRENT_DIR/product-service
-./gradlew clean build
-echo "Pushing Product Service"
-echo "Manifest for deployment: "
-echo " "
-writeManifest $CURRENT_DIR/product-service/manifest.yml
-cf push
-echo " "
-echo "Deploying Order Service: $CURRENT_DIR/order-service"
-echo "Building The Service"
-cd $CURRENT_DIR/order-service
-./gradlew clean build
-echo "Pushing Order Service"
-echo "Manifest for deployment: "
-echo " "
-writeManifest $CURRENT_DIR/order-service/manifest.yml
+writeManifest $CURRENT_DIR/manifest.yml
 cf push
 echo " "

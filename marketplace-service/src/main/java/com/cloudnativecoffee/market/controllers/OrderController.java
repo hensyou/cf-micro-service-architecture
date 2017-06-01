@@ -16,6 +16,11 @@ import com.cloudnativecoffee.market.model.Product;
 import com.cloudnativecoffee.market.services.OrderService;
 
 @Controller
+/**
+ * Controller for the Order page HTML
+ * @author lshannon
+ *
+ */
 public class OrderController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 	private final OrderService orderService;
@@ -25,6 +30,11 @@ public class OrderController {
 	}
 
 	@RequestMapping("/orders")
+	/**
+	 * Controller to view the orders in the system
+	 * @param model
+	 * @return
+	 */
 	public String orders(Model model) {
 		LOGGER.info("Entered orders");
 		ResponseEntity<List<Order>> orderList = orderService.getAllOrders();
@@ -34,6 +44,10 @@ public class OrderController {
 	}
 	
 	@GetMapping("/placeOrder")
+	/**
+	 * Controller to place an order
+	 * @return
+	 */
 	public String placeOrder() {
 		Order newOrder = new Order();
 		List<Product> products = new ArrayList<Product>();

@@ -7,6 +7,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 
 @Configuration
 @EnableWebSecurity
+/**
+ * Provides security configuration for the application
+ * @author lshannon
+ *
+ */
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -21,31 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	        .formLogin().permitAll()
 	        .defaultSuccessUrl("/");
     }
-}
-
-//class HystrixRequestContextServletFilter implements Filter {
-//
-//    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) 
-//     throws IOException, ServletException {
-//        HystrixRequestContext context = HystrixRequestContext.initializeContext();
-//        try {
-//            chain.doFilter(request, response);
-//        } finally {
-//            context.shutdown();
-//        }
-//    }
-//
-//    @Override
-//    public void init(FilterConfig filterConfig) throws ServletException {
-//        // TODO Auto-generated method stub
-//
-//    }
-//
-//    @Override
-//    public void destroy() {
-//        // TODO Auto-generated method stub
-//
-//    }
-//}   
+}  
 
 
