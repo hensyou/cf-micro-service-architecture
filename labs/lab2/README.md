@@ -229,7 +229,7 @@ OK
 
 ```
 
-Update the manifest.yml file to include the ser
+Update the manifest.yml file to include the service instance.
 
 ```shell
 
