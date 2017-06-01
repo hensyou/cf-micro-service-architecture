@@ -237,6 +237,7 @@ This project uses Thymeleaf, a very simple HTML attribute based templating engin
 </html>
 
 ```
+Note: The reference 'marketplace' application demonstrates some of the more useful features of Thymeleaf.
 
 ### Adding A Simple Controller
 
