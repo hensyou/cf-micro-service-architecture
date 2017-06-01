@@ -269,7 +269,7 @@ compile('org.flywaydb:flyway-core:4.1.2')
 ```
 ### Configure Flyway
 
-In the resources folder create a folder called db. Instead of this create a folder called migration. With in the migration folder create a file called 'V1__init.sql'
+In the resources folder create a folder called db. Inside of this create a folder called migration. Within the migration folder create a file called 'V1__init.sql'
 
 ```sql
 
