@@ -256,7 +256,7 @@ You can now test your endpoint to ensure the data is there. The Postgres Service
 
 ## Adding Flyway
 
-The way we have been working is not reccomended when you need tighter control over the schema or need to manage applications updates with  a change to the DB. To deal with this we will add Flyway.
+The way we have been working is not recommended when you need tighter control over the schema or need to manage application updates with a change to the DB. To deal with this we will add Flyway.
 
 ### Add the flyway dependancy
 
