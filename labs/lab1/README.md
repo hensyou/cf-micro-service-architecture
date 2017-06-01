@@ -31,6 +31,11 @@ Lastly you can create it with a wizard in STS or IntelliJ.
 
 ![Architecture](images/sts_create_project.png)
 
+Ensure to pick the dependancies 'Web' and 'Actuator'
+
+![Architecture](images/sts_create_project_dependancies.png)
+
+
 Once created, import the project into your workspace (using Import Gradle/Maven). If you made this project using an IDE plugin, it will already be created.
 
 
