@@ -214,6 +214,8 @@ curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d grou
 
 If you are using start.spring.io, simply select the following projects: web, actuator, thymeleaf
 
+![Architecture](images/sts_create_project_dependancies_ui.png)
+
 Once created, import into your IDE of choice (ie: import existing Gradle project).
 
 ### Adding A Thymeleaf Template
