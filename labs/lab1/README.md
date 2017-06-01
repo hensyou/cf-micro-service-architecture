@@ -208,7 +208,7 @@ Lets build out a basic UI.  We will call this ui-service.
 
 ```shell
 
-curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.sample -d name=ui-service -d type=gradle-project | tar -xzvf -
+curl https://start.spring.io/starter.tgz -d style=web,thymeleaf,actuator -d groupId=com.example -d name=ui-service -d type=gradle-project | tar -xzvf -
 
 ```
 
