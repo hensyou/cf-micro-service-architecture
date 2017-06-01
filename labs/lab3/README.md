@@ -122,7 +122,6 @@ at /src/main/java/com/sample/model/Inventory.java
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Builder
 public class Inventory implements Serializable {
     private static final long serialVersionUID = 3734899149255587948L;
 
