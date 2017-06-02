@@ -653,81 +653,24 @@ https://docs.pivotal.io/spring-cloud-services/1-3/common/config-server/
 
 ### Update The RestTemplate call to include an Authentication Header
 
-Update the Service to add an authentication header:
+Add a RestTemplateBuilder and use the basicAuthorization method to add a Basic Authorization header to the request with the correct credentials.
 
 ```java
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+@SpringBootApplication
+@EnableCircuitBreaker
+public class UiServiceApplication {
 
-import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-
-/**
- * @author lshannon
- *
- */
-@Service
-public class ProductService {
-
-	private RestTemplate restTemplate;
-	
-	@Value("${product.service.host}")
-	private String product_service_host;
-	
-	@Value("${username}")
-	private String admin_username;
-
-	@Value("${password}")
-	private String admin_password;
-
-	public ProductService(RestTemplate restTemplate) {
-		this.restTemplate = restTemplate;
+	public static void main(String[] args) {
+		SpringApplication.run(UiServiceApplication.class, args);
 	}
 	
-	  private HttpHeaders getHeaders(){
-	        String plainCredentials= admin_username + ":" + admin_password;
-	        String base64Credentials = new String(Base64.encodeBase64(plainCredentials.getBytes()));
-	         
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.add("Authorization", "Basic " + base64Credentials);
-	        headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
-	        return headers;
-	    }
-
-	@HystrixCommand(fallbackMethod = "fallBack", commandProperties = {
-			@HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "5"),
-			@HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000") })
-	public List<Product> getProducts() {
-		ParameterizedTypeReference<List<Product>> parameterizedTypeReference = new ParameterizedTypeReference<List<Product>>() {
-		};
-		 HttpEntity<String> request = new HttpEntity<String>(getHeaders());
-		List<Product> products = restTemplate
-				.exchange(product_service_host + "v1/product", HttpMethod.GET, request, parameterizedTypeReference)
-				.getBody();
-		return products;
+	@Bean
+	RestTemplate restTemplate() {
+		return new RestTemplateBuilder().basicAuthorization(admin_username, admin_password).build();
 	}
+}	
 
-	public List<Product> fallBack() {
-		List<Product> product = new ArrayList<Product>();
-		Product product1 = new Product();
-		product1.setName("Rocket Ship");
-		product.add(product1);
-		return product;
-	}
-
-}
 ```
 
 ### Redeploy To PCF
