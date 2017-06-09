@@ -50,12 +50,14 @@ Take a look at **build.gradle**. In the code snippet below you can see all the d
 ```java
 
 dependencies {
-  compile('org.springframework.boot:spring-boot-starter-amqp')
-  compile('org.springframework.boot:spring-boot-starter-cloud-connectors')
-  compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
-  compileOnly('org.projectlombok:lombok')
-  testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-bus-amqp')
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	compile('org.springframework.boot:spring-boot-starter-data-redis')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
 
 ```
 ### Let's start the application
