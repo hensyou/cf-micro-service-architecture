@@ -64,39 +64,18 @@ dependencies {
 To start the application, right click the application select 'Run InventoryServiceApplication main()'.
 You can see the server startup in the console.
 
-### Separation of profiles for our application
-Let's add a dev profile for our project
-Create 'application.yml' under src/main/resources.
+### (Optional Local Testing) Setting server port to the application
+Create 'application.yml' under src/main/resources. You can delete application.properties to reduce confusion.
 ```yml
 spring:
   application:
     name: inventory-service
----
-spring:
-  profiles: dev
+    
 server:
     port: 8084
-```
-A YAML file is actually a sequence of documents separated by --- lines, and each document is parsed separately to a flattened map.
-
-If a YAML document contains a spring.profiles key, then the profiles value (comma-separated list of profiles) is fed into the Spring Environment.acceptsProfiles(), and if any of those profiles are active, then that document is included in the final merge (otherwise not).
-
-Once this is done, add the line below to your run configuration or to your application.properties\ run configurations
-
-```java
-spring.profiles.active:dev
-```
-Let's restart the server. You should see the following line in the console
-```java
-com.sample.InventoryServiceApplication   : The following profiles are active: dev
-```
-
-### [OPTIONAL] Running RabbitMQ and Redis instances in your machine using docker
-Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
-
-Add docker compose file at inventory-service/docker-compose.yml
-```yml
+    
 version: "3"
+
 services:
  redis:
   image: redis:alpine
@@ -109,6 +88,14 @@ services:
   ports:
     - "15672:15672"
     - "5672:5672"
+```
+
+### [OPTIONAL] Running RabbitMQ and Redis instances in your machine using docker
+Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
+
+Add docker compose file at inventory-service/docker-compose.yml
+```yml
+
 ```
   * On Mac, open your terminal and run the below command
   * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
