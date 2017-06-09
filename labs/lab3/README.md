@@ -31,12 +31,15 @@ Create a new Spring Boot project as was done in the previous Labs. This project 
 * Redis [read more on Redis](https://redis.io/)
 
 Creating the project in STS:
+
 ![alt text](images/sts-create-project.png)
 
 In STS the dependancies will look like this.
+
 ![alt text](images/sts-dependancies.png)
 
-For Spring Initializer, they will look like this.
+For Spring Initializer, they will look like this:
+
 ![alt text](images/spring-initializer-inventory-service.png)
 
 ### Dependencies in build.gradle
