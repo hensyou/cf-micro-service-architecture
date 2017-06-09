@@ -3,39 +3,42 @@
 In this lab we will create a new simple service that we can send a message to, and then persist the data in this message to Redis.
 
 ## Concepts To Learn
-1. Working with Repositories using a different backing data store
-2. Adding Messaging using RabbitMQ
+1. Working with Spring Data Repositories to persist to Redis
+2. Sending and Receiving Messages using RabbitMQ and Spring Cloud Stream
 
 ### Pre-Requisites for running in local [Optional]
+Only do this section to develop/test locally without PCF or PCF Dev. During the labs we will be developing and testing with PWS to save time.
+
+For future reference, the following is for a local set up:
 1. Java 8
 2. Docker should be installed in your system
   * Windows 7,  [use Docker Toolbox](https://www.docker.com/products/docker-toolbox). When installing, make sure to select **ALL** the install options
   * Mac,  [use docker for Mac](https://docs.docker.com/docker-for-mac/)
   * Once the docker is running, you will need to run redis cache in docker
 
-4. Lombok Setup for IntelliJ
-This set up is required to enable Lombak annotations to work in your local IDE:
-  * Install Lombok plugin
-  * Enable annotation processing (Settings -> Build, Execution, Deployment -> Compiler -> Annotation Processors -> Enable annotation processing)
+3. Lombok Setup (refer to set up directions https://github.com/lshannon/cf-micro-service-architecture)
 
-5. Good to have - PostMan, from [Google webstore](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi2te35xJLTAhXn3YMKHXJmAogQFggjMAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fpostman%2Ffhbjgbiflinjbdggehcddcbncdddomop%3Fhl%3Den&usg=AFQjCNE_Yq59TT1ZExzJ68FTldg4ho_lGw&sig2=oDm4-jzg6EBrl9oqurNFIQ)
+4. Good to have - PostMan, from [Google webstore](https://www.google.ca/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&cad=rja&uact=8&ved=0ahUKEwi2te35xJLTAhXn3YMKHXJmAogQFggjMAA&url=https%3A%2F%2Fchrome.google.com%2Fwebstore%2Fdetail%2Fpostman%2Ffhbjgbiflinjbdggehcddcbncdddomop%3Fhl%3Den&usg=AFQjCNE_Yq59TT1ZExzJ68FTldg4ho_lGw&sig2=oDm4-jzg6EBrl9oqurNFIQ)
 
 
 ### Generating the Spring Boot Application
 Go to  [Spring Initializr](http://start.spring.io/)
-Please read the following instructions before generating the project.
-On the screenshot below there are couple of important points to note:
-* Select Gradle project
-* Do not change the spring boot version (it always defaults to the latest. At the moment of writing, the latest version is 1.5.2 )
-* Search for dependencies, see examples of dependencies on the right side of the screenshot
-
-Add the dependencies needed for the project like
+Create a new Spring Boot project as was done in the previous Labs. This project will be called 'inventory service' and will have the following dependancies:
 * AMQP - [read more on AMQP](https://projects.spring.io/spring-amqp/)
 * Stream Rabbit [read more on messaging with RabbitMQ](https://spring.io/guides/gs/messaging-rabbitmq/)
 * Cloud Connectors [read more on cloud connectors](http://cloud.spring.io/spring-cloud-connectors/)
 * Lombok [read more on Lombok](https://projectlombok.org/)
 * Redis [read more on Redis](https://redis.io/)
+
+Creating the project in STS:
+![alt text](images/sts-create-project.png)
+
+In STS the dependancies will look like this.
+![alt text](images/sts-dependancies.png)
+
+For Spring Initializer, they will look like this.
 ![alt text](images/spring-initializer-inventory-service.png)
+
 ### Dependencies in build.gradle
 Once the project has been generated, it will be downloaded to your system as a zip file. Extract it to any prefered location. Open the project in your favorite IDE.
 You will see that the basic project structure will be made for you.
