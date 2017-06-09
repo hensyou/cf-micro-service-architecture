@@ -317,7 +317,7 @@ public class UiServiceApplication {
 
 #### Set Up Profiles For The Product Service Route
 
-In the same directory as application.properties (src/main/resources), create a file called application.yml. Once created, delete your application.properties.
+In the same directory as application.properties (src/main/resources), create a file called application.yml. Once created, delete your application.properties to reduce confusion.
 
 Add the following to your application.yml:
 
@@ -337,7 +337,12 @@ spring:
 product.service.host: https://product-service.cfapps.io/
 
 ```
-PCF will run the `cloud` profile. This will allow you to test locally and via PCF seamlessly. If you needed to update the Route in your product manifest for it to push (ie: it was not unique), you will need to up-date the `product.service.host` accordingly.
+
+A YAML file is actually a sequence of documents separated by --- lines, and each document is parsed separately to a flattened map.
+
+If a YAML document contains a spring.profiles key, then the profiles value (comma-separated list of profiles) is fed into the Spring Environment.acceptsProfiles(), and if any of those profiles are active, then that document is included in the final merge (otherwise not).
+
+In the example above, PCF will run the `cloud` profile. This will allow you to test locally and via PCF seamlessly. If you needed to update the Route in your product manifest for it to push (ie: it was not unique), you will need to up-date the `product.service.host` accordingly.
 
 A better approach to sharing configurations like this is to use Config Server:
 
