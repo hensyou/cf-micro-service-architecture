@@ -194,7 +194,6 @@ applications:
   routes:
   - route: product-service.cfapps.io
 
-
 ```
 
 Ensure to clean and build your Gradle project `./gradlew clean build` and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, update the `route` name to be more unique in the manifest.yml file.
