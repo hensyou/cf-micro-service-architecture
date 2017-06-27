@@ -296,6 +296,8 @@ POST localhost:8084/v1/inventory
   "productName" : "Hammer of Thor"
 }
 ```
+Note: You must be worthy to use this product :-)
+
 You can not try the GET endpoint again, to see the above inventory added.
 
 ### Deploy to Cloud Foundry
@@ -305,10 +307,11 @@ Create a file in the root of the project called 'manifest.yml'. Add the followin
 ```shell
 ---
 applications:
-- name: <your first name here>-inventory-service
+- name: inventory-service
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/inventory-service-0.0.1-SNAPSHOT.jar
+  host: '<your first name here>'-inventory-service
   env:
     CF_TARGET: https://api.run.pivotal.io
   services:
@@ -318,6 +321,10 @@ applications:
 Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, update the `route` name to be more unique in the manifest.yml file.
 
 As you can see, we have hopper-training-redis-cache as one service. You will need to bind a redis service using PCF marketplace.
+
+To test this without Swagger, Postman can also be used.
+
+![alt text](images/postman-thor.png)
 
 ### Adding RabbitMQ
 Pre-requisite : Product-service is up and running (From Lab -1)
