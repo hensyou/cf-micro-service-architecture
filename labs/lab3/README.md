@@ -31,12 +31,15 @@ Create a new Spring Boot project as was done in the previous Labs. This project 
 * Redis [read more on Redis](https://redis.io/)
 
 Creating the project in STS:
+
 ![alt text](images/sts-create-project.png)
 
 In STS the dependancies will look like this.
+
 ![alt text](images/sts-dependancies.png)
 
-For Spring Initializer, they will look like this.
+For Spring Initializer, they will look like this:
+
 ![alt text](images/spring-initializer-inventory-service.png)
 
 ### Dependencies in build.gradle
@@ -47,51 +50,36 @@ Take a look at **build.gradle**. In the code snippet below you can see all the d
 ```java
 
 dependencies {
-  compile('org.springframework.boot:spring-boot-starter-amqp')
-  compile('org.springframework.boot:spring-boot-starter-cloud-connectors')
-  compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
-  compileOnly('org.projectlombok:lombok')
-  testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-bus-amqp')
+	compile('org.springframework.cloud:spring-cloud-starter-stream-rabbit')
+	compile('org.springframework.boot:spring-boot-starter-data-redis')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
 
 ```
 ### Let's start the application
 To start the application, right click the application select 'Run InventoryServiceApplication main()'.
-You can see the server startup in the console.
+You can see the server startup in the console. This will start a simple Spring Boot application with the embedded Tomcat
+server runner.
 
-### Separation of profiles for our application
-Let's add a dev profile for our project
-Create 'application.yml' under src/main/resources.
+### (Optional Local Testing) Setting server port to the application
+Create 'application.yml' under src/main/resources. You can delete application.properties to reduce confusion.
+
+Note: version: "3" is a select the Docker Compose file format version (local testing only).
+
 ```yml
 spring:
   application:
     name: inventory-service
----
-spring:
-  profiles: dev
+    
 server:
     port: 8084
-```
-A YAML file is actually a sequence of documents separated by --- lines, and each document is parsed separately to a flattened map.
-
-If a YAML document contains a spring.profiles key, then the profiles value (comma-separated list of profiles) is fed into the Spring Environment.acceptsProfiles(), and if any of those profiles are active, then that document is included in the final merge (otherwise not).
-
-Once this is done, add the line below to your run configuration or to your application.properties\ run configurations
-
-```java
-spring.profiles.active:dev
-```
-Let's restart the server. You should see the following line in the console
-```java
-com.sample.InventoryServiceApplication   : The following profiles are active: dev
-```
-
-### [OPTIONAL] Running RabbitMQ and Redis instances in your machine using docker
-Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
-
-Add docker compose file at inventory-service/docker-compose.yml
-```yml
+    
 version: "3"
+
 services:
  redis:
   image: redis:alpine
@@ -105,6 +93,12 @@ services:
     - "15672:15672"
     - "5672:5672"
 ```
+
+### [OPTIONAL] Running RabbitMQ and Redis instances in your machine using docker
+Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
+
+Add docker compose file at inventory-service/docker-compose.yml
+
   * On Mac, open your terminal and run the below command
   * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
 
@@ -121,19 +115,15 @@ Let's make the model class have the following variables :
 at /src/main/java/com/sample/model/Inventory.java
 ```java
 //lombok annotations
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Inventory implements Serializable {
+public @Data class Inventory implements Serializable {
     private static final long serialVersionUID = 3734899149255587948L;
-
     private String id;
     @NotEmpty
     private String productName;
 }
 ```
-Note the lombok annotations! You can check out the various functionalities of lombok [here](https://projectlombok.org/).
+Note: Serialable is required to persist data to Redis
+Take a moment and review what Lombok generated for you. You can check out the various functionalities of lombok [here](https://projectlombok.org/).
 
 ### Create a Repository for CRUD Operations
 
@@ -239,7 +229,6 @@ public class InventoryService {
     public Inventory createInventory(Inventory inventory) {
         try {
             inventory.setId(UUID.randomUUID().toString());
-            inventory.setStatus(false);
             return inventoryRepository.save(inventory);
         } catch (DataIntegrityViolationException e) {
             log.error("redis save threw an error", e);
@@ -282,11 +271,13 @@ public class InventoryController {
     @GetMapping(value = "/inventory" ,
             produces = "application/json")
     public ResponseEntity<Iterable<Inventory>> listAll() {
+    	log.info("Entering Inventory controller -  listAll");
         return ResponseEntity.ok(this.inventoryService.listAll());
     }
 
     @PostMapping(value = "/inventory")
     public ResponseEntity<Inventory> createInventory(@RequestBody @Valid Inventory inventory) {
+    	log.info("Entering Inventory controller -  createInventory");
         return ResponseEntity.ok(this.inventoryService.createInventory(inventory));
     }
 }
@@ -305,11 +296,13 @@ POST localhost:8084/v1/inventory
   "productName" : "Hammer of Thor"
 }
 ```
+Note: You must be worthy to use this product :-)
+
 You can not try the GET endpoint again, to see the above inventory added.
 
 ### Deploy to Cloud Foundry
 
-Create a file in the root of the project called 'manifest.yml'. Add the following to this file:
+Create a file in the root of the project called 'manifest.yml'. Add the following to this file. Make sure to insert your first name in place of '<your first name here>'.
 
 ```shell
 ---
@@ -318,6 +311,7 @@ applications:
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/inventory-service-0.0.1-SNAPSHOT.jar
+  host: '<your first name here>'-inventory-service
   env:
     CF_TARGET: https://api.run.pivotal.io
   services:
@@ -327,6 +321,10 @@ applications:
 Ensure to clean and build your Gradle project and then deploy to PWS by running `cf push` from the same folder as the manifest.yml. Also you can deploy to PCF using the STS plugin. If the host is already taken, update the `route` name to be more unique in the manifest.yml file.
 
 As you can see, we have hopper-training-redis-cache as one service. You will need to bind a redis service using PCF marketplace.
+
+To test this without Swagger, Postman can also be used.
+
+![alt text](images/postman-thor.png)
 
 ### Adding RabbitMQ
 Pre-requisite : Product-service is up and running (From Lab -1)
