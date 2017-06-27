@@ -62,10 +62,14 @@ dependencies {
 ```
 ### Let's start the application
 To start the application, right click the application select 'Run InventoryServiceApplication main()'.
-You can see the server startup in the console.
+You can see the server startup in the console. This will start a simple Spring Boot application with the embedded Tomcat
+server runner.
 
 ### (Optional Local Testing) Setting server port to the application
 Create 'application.yml' under src/main/resources. You can delete application.properties to reduce confusion.
+
+Note: version: "3" is a select the Docker Compose file format version (local testing only).
+
 ```yml
 spring:
   application:
@@ -94,9 +98,7 @@ services:
 Pre-requisite : Install docker in your machine, Take a look at `Pre-Requisites for running in local` section to find instructions for Docker installation.
 
 Add docker compose file at inventory-service/docker-compose.yml
-```yml
 
-```
   * On Mac, open your terminal and run the below command
   * On Windows, start Docker (Docker Quick Start Terminal), go to the training module path. Run the below command
 
@@ -113,19 +115,15 @@ Let's make the model class have the following variables :
 at /src/main/java/com/sample/model/Inventory.java
 ```java
 //lombok annotations
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class Inventory implements Serializable {
+public @Data class Inventory implements Serializable {
     private static final long serialVersionUID = 3734899149255587948L;
-
     private String id;
     @NotEmpty
     private String productName;
 }
 ```
-Note the lombok annotations! You can check out the various functionalities of lombok [here](https://projectlombok.org/).
+Note: Serialable is required to persist data to Redis
+Take a moment and review what Lombok generated for you. You can check out the various functionalities of lombok [here](https://projectlombok.org/).
 
 ### Create a Repository for CRUD Operations
 
@@ -231,7 +229,6 @@ public class InventoryService {
     public Inventory createInventory(Inventory inventory) {
         try {
             inventory.setId(UUID.randomUUID().toString());
-            inventory.setStatus(false);
             return inventoryRepository.save(inventory);
         } catch (DataIntegrityViolationException e) {
             log.error("redis save threw an error", e);
@@ -274,11 +271,13 @@ public class InventoryController {
     @GetMapping(value = "/inventory" ,
             produces = "application/json")
     public ResponseEntity<Iterable<Inventory>> listAll() {
+    	log.info("Entering Inventory controller -  listAll");
         return ResponseEntity.ok(this.inventoryService.listAll());
     }
 
     @PostMapping(value = "/inventory")
     public ResponseEntity<Inventory> createInventory(@RequestBody @Valid Inventory inventory) {
+    	log.info("Entering Inventory controller -  createInventory");
         return ResponseEntity.ok(this.inventoryService.createInventory(inventory));
     }
 }
@@ -301,12 +300,12 @@ You can not try the GET endpoint again, to see the above inventory added.
 
 ### Deploy to Cloud Foundry
 
-Create a file in the root of the project called 'manifest.yml'. Add the following to this file:
+Create a file in the root of the project called 'manifest.yml'. Add the following to this file. Make sure to insert your first name in place of '<your first name here>'.
 
 ```shell
 ---
 applications:
-- name: inventory-service
+- name: <your first name here>-inventory-service
   memory: 1024M
   buildpack: java_buildpack
   path: build/libs/inventory-service-0.0.1-SNAPSHOT.jar
