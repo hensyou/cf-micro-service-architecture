@@ -1,8 +1,5 @@
 package com.cloudnativecoffee.model;
 
-
-import lombok.*;
-
 import java.io.Serializable;
 
 
@@ -12,7 +9,6 @@ import java.io.Serializable;
  * @author gnair lshannon
  *
  */
-@Builder
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = 1L;

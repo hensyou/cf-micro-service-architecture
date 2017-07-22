@@ -1,23 +1,29 @@
 package com.cloudnativecoffee.product.service.impl;
 
+import java.util.List;
+
+import javax.validation.ConstraintViolationException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.stereotype.Service;
+
 import com.cloudnativecoffee.model.Product;
 import com.cloudnativecoffee.product.repo.ProductRepo;
 import com.cloudnativecoffee.product.service.ProductService;
 import com.google.common.collect.Lists;
-import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.stereotype.Service;
-
-import javax.validation.ConstraintViolationException;
-import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
+    @Autowired
     private ProductRepo productRepo;
+    
+    public ProductServiceImpl(ProductRepo productRepo) {
+    	this.productRepo=productRepo;
+    }
 
     @Override
     public List<Product> getAllProducts() {

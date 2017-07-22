@@ -1,19 +1,16 @@
 package com.cloudnativecoffee.model;
 
 
-import lombok.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-
 @RedisHash("Order")
-//lombok
-@Builder
 public class Order implements Serializable{
 
     private static final long serialVersionUID = 3734899149255587948L;
