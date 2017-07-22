@@ -27,7 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
 	private static final Logger LOG = LoggerFactory.getLogger(ProductController.class);
-	private final ProductService productService;
+	private ProductService productService;
 
 	@GetMapping("/products")
 	ResponseEntity<List<Product>> products() {

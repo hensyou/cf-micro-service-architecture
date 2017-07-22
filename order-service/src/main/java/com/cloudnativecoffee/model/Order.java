@@ -13,9 +13,6 @@ import java.util.List;
 
 @RedisHash("Order")
 //lombok
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 public class Order implements Serializable{
 
@@ -32,5 +29,37 @@ public class Order implements Serializable{
     private List<Product> productList = new ArrayList<>();
 
     private Boolean fulfilled;
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public List<Product> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(List<Product> productList) {
+		this.productList = productList;
+	}
+
+	public Boolean getFulfilled() {
+		return fulfilled;
+	}
+
+	public void setFulfilled(Boolean fulfilled) {
+		this.fulfilled = fulfilled;
+	}
 
 }

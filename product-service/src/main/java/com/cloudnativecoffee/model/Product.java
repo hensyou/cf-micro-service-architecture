@@ -7,27 +7,59 @@ import java.io.Serializable;
 
 @Entity
 @Table(name="product")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Getter @Setter
     private Long id;
 
-    @Getter @Setter
     private String name;
 
-    @Getter @Setter
     private Double price;
 
-    @Getter @Setter
-    private String description;
+    public Long getId() {
+		return id;
+	}
 
-    @Getter @Setter
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	private String description;
+
     private Integer quantity;
 
 }

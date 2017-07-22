@@ -4,6 +4,8 @@ package com.cloudnativecoffee.order.controller;
 import static com.google.common.base.Preconditions.checkNotNull;
 import java.util.List;
 import javax.validation.Valid;
+
+import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cloudnativecoffee.model.Order;
 import com.cloudnativecoffee.order.service.OrderService;
+import com.cloudnativecoffee.product.ResourceServerConfig;
 
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/v1")
-@Slf4j
 public class OrderController {
+	private static final Logger logger = Logger.getLogger(OrderController.class);
     private final OrderService orderService;
 
     public OrderController(OrderService orderService) {
@@ -44,7 +47,7 @@ public class OrderController {
             consumes =  "application/json",
             produces = "application/json")
     public ResponseEntity<Order> createOrder(@RequestBody @Valid Order order) {
-        log.info("Order placed : "+ order.toString());
+    	logger.info("Order placed : "+ order.toString());
         return ResponseEntity.ok(this.orderService.createOrder(order));
     }
 

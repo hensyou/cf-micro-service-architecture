@@ -1,16 +1,17 @@
 package com.cloudnativecoffee.order.messaging;
 
-import com.cloudnativecoffee.model.Order;
-import com.cloudnativecoffee.order.repository.OrderRepo;
-import lombok.extern.slf4j.Slf4j;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import org.apache.log4j.Logger;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.integration.annotation.MessageEndpoint;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import com.cloudnativecoffee.model.Order;
+import com.cloudnativecoffee.order.repository.OrderRepo;
 
 @MessageEndpoint
-@Slf4j
 public class OrderMessageListener {
+	private final Logger logger = Logger.getLogger(OrderMessageListener.class);
 	private final OrderRepo orderRepo;
 
 	public OrderMessageListener(OrderRepo orderRepo) {
@@ -19,7 +20,7 @@ public class OrderMessageListener {
 	
     @StreamListener(value = "confirmationChannel")
     public void checkOrderConfirmation(Order order) {
-		log.info("order confirmation saved, status is "+order.getFulfilled());
+    	logger.info("order confirmation saved, status is "+order.getFulfilled());
     	orderRepo.save(order);
     }
 

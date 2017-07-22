@@ -17,15 +17,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.csrf().disable()
 	        .authorizeRequests()
 			.antMatchers("/").permitAll()
 	        .antMatchers("/hystrix.stream/**").permitAll()
 	        .antMatchers("/webjars/**").permitAll()
 			.antMatchers("/home").permitAll()
+			.antMatchers("/product").permitAll()
 			.antMatchers("/images/**").permitAll()
-	        .anyRequest().authenticated()
-	        .and().exceptionHandling();
+	        //.anyRequest().authenticated()
+	        .and().exceptionHandling()
+	        ;
     }
 }  
 

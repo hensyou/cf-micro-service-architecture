@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private static final Logger LOG = LoggerFactory.getLogger(ProductServiceImpl.class);
-    private final ProductRepo productRepo;
+    private ProductRepo productRepo;
 
     @Override
     public List<Product> getAllProducts() {
