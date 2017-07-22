@@ -1,5 +1,8 @@
 server:
   port: 9999
+  tomcat:
+    accesslog:
+      enabled: true
 
 security:
   user:
